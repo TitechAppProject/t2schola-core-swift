@@ -20,7 +20,9 @@ struct LoginRequest: T2ScholaRequest {
     
     let queryParameters: [String: Any]?
     
-    let headerFields: [String: String]?
+    let headerFields: [String: String]? = [
+        "User-Agent" : "Mozilla/5.0 (iPad; CPU OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
+    ]
     
     func decode(data: Data) throws -> LoginResponse {
         guard let doc = { () -> HTMLDocument? in
@@ -41,21 +43,12 @@ struct LoginRequest: T2ScholaRequest {
         return LoginResponse(wsToken: "")
     }
     
-    init(cookies: [HTTPCookie]) {
+    init() {
         queryParameters = [
             "service" : "moodle_mobile_app",
             "passport" : 7.11376419125993,
             "urlscheme" : "mmt2schola"
         ]
-        
-        
-        let uaHeaderFields: [String: String] = [
-            "User-Agent" : "Mozilla/5.0 (iPad; CPU OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
-        ]
-        
-        let cookieHeaderFields = HTTPCookie.requestHeaderFields(with: cookies)
-        
-        headerFields = uaHeaderFields.merging(cookieHeaderFields, uniquingKeysWith: { $1 })
     }
 }
 

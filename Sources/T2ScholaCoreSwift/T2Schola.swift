@@ -15,7 +15,7 @@ public struct T2Schola {
     }
     
     public func login(cookies: [HTTPCookie]? = nil, completionHandler: @escaping (Result<Void, Error>) -> Void) {
-        apiClient.send(request: LoginRequest(cookies: cookies ?? []), cookies: cookies) { result in
+        apiClient.send(request: LoginRequest(), cookies: cookies) { result in
             switch result {
             case .success(_):
                 completionHandler(.success(()))
