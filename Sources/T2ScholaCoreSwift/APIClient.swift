@@ -11,21 +11,17 @@ import FoundationNetworking
 #endif
 
 protocol APIClient {
-    func send<R: Request>(request: R, cookies: [HTTPCookie]?, completionHandler: @escaping (Result<R.Response, Error>) -> Void)
+    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, Error>) -> Void)
 }
 
-extension APIClient {
-    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, Error>) -> Void) {
-        send(request: request, cookies: nil, completionHandler: completionHandler)
-    }
+enum APIClientError: Error {
+    case network
+    case invalidStatusCode(_ code: Int)
 }
 
 struct APIClientImpl: APIClient {
-    func send<R: Request>(request: R, cookies: [HTTPCookie]?, completionHandler: @escaping (Result<R.Response, Error>) -> Void) {
+    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, Error>) -> Void) {
         let urlRequest = request.generate()
-        if let cookies = cookies {
-            URLSession.shared.configuration.httpCookieStorage?.setCookies(cookies, for: urlRequest.url, mainDocumentURL: nil)
-        }
 
         let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
@@ -34,14 +30,12 @@ struct APIClientImpl: APIClient {
             }
 
             guard let response = response as? HTTPURLResponse, let data = data else {
-                fatalError()
-//                completionHandler(.failure(NSError()))
+                completionHandler(.failure(APIClientError.network))
                 return
             }
 
             guard (200..<300).contains(response.statusCode) else {
-                fatalError()
-//                completionHandler(.failure(NSError()))
+                completionHandler(.failure(APIClientError.invalidStatusCode(response.statusCode)))
                 return
             }
 
@@ -72,7 +66,7 @@ struct APIClientMock: APIClient {
         self.error = error
     }
 
-    func send<R: Request>(request: R, cookies: [HTTPCookie]?, completionHandler: @escaping (Result<R.Response, Error>) -> Void) {
+    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, Error>) -> Void) {
         if let error = self.error {
             completionHandler(.failure(error))
         }

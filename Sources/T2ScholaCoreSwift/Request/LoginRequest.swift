@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by nanashiki on 2020/12/19.
-//
-
 import Foundation
 import Kanna
 #if canImport(FoundationNetworking)
@@ -36,11 +29,23 @@ struct LoginRequest: T2ScholaRequest {
 //            throw NSError()
             fatalError()
         }
-        print(String(data: data, encoding: .utf8))
-        print(doc.css("a#launchapp").count)
+        
+        guard
+            let launchapp = doc.css("a#launchapp").first,
+            let href = launchapp["href"],
+            let decodedData = Data(base64Encoded: href.replacingOccurrences(of: "mmt2schola://token=", with: "")),
+            let decodedStr = String(data: decodedData, encoding: .utf8) else {
+            fatalError()
+        }
         
         
-        return LoginResponse(wsToken: "")
+        let splitedToken = decodedStr.components(separatedBy: ":::")
+        
+        if splitedToken.count > 2 {
+            return LoginResponse(wsToken: splitedToken[1])
+        } else {
+            fatalError()
+        }
     }
     
     init() {
