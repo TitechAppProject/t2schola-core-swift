@@ -25,11 +25,33 @@ public struct T2Schola {
         }
     }
     
-    public func getSiteInfo(wsToken: String, completionHandler: @escaping (Result<Int, Error>) -> Void) {
+    public func getSiteInfo(wsToken: String, completionHandler: @escaping (Result<SiteInfoResponse, Error>) -> Void) {
         apiClient.send(request: SiteInfoRequest(wsToken: wsToken)) { result in
             switch result {
             case let .success(response):
-                completionHandler(.success(response.userid))
+                completionHandler(.success(response))
+            case let .failure(error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    public func getUserCourses(userId: String, wsToken: String, completionHandler: @escaping (Result<UserEnrolCoursesResponse, Error>) -> Void) {
+        apiClient.send(request: UserEnrolCoursesRequest(userId: userId, wsToken: wsToken)) { result in
+            switch result {
+            case let .success(response):
+                completionHandler(.success(response))
+            case let .failure(error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    public func getCourseCategories(wsToken: String, completionHandler: @escaping (Result<CourseCategoriesResponse, Error>) -> Void) {
+        apiClient.send(request: CourseCategoriesRequest(wsToken: wsToken)) { result in
+            switch result {
+            case let .success(response):
+                completionHandler(.success(response))
             case let .failure(error):
                 completionHandler(.failure(error))
             }

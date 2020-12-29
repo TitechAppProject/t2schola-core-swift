@@ -51,7 +51,7 @@ struct LoginRequest: T2ScholaRequest {
     init() {
         queryParameters = [
             "service" : "moodle_mobile_app",
-            "passport" : 7.11376419125993,
+            "passport" : Double.random(in: 0...1000),
             "urlscheme" : "mmt2schola"
         ]
     }

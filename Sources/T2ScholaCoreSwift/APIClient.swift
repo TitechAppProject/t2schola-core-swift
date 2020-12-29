@@ -11,26 +11,35 @@ import FoundationNetworking
 #endif
 
 protocol APIClient {
-    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, Error>) -> Void)
+    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, APIClientError>) -> Void)
 }
 
 enum APIClientError: Error {
-    case network
+    case network(_ errro: Error)
+    case noResponse
+    case t2ScholaAPIError(_ response: T2ScholaAPIErrorResponse)
     case invalidStatusCode(_ code: Int)
+    case responseDecode(_ errro: Error)
+}
+
+struct T2ScholaAPIErrorResponse: Decodable {
+    let errorcode: String
+    let exception: String
+    let message: String
 }
 
 struct APIClientImpl: APIClient {
-    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, Error>) -> Void) {
+    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, APIClientError>) -> Void) {
         let urlRequest = request.generate()
 
         let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
-                completionHandler(.failure(error))
+                completionHandler(.failure(APIClientError.network(error)))
                 return
             }
 
             guard let response = response as? HTTPURLResponse, let data = data else {
-                completionHandler(.failure(APIClientError.network))
+                completionHandler(.failure(APIClientError.noResponse))
                 return
             }
 
@@ -42,7 +51,11 @@ struct APIClientImpl: APIClient {
             do {
                 completionHandler(.success(try request.decode(data: data)))
             } catch {
-                completionHandler(.failure(error))
+                if let errorResponse = try? JSONDecoder().decode(T2ScholaAPIErrorResponse.self, from: data) {
+                    completionHandler(.failure(APIClientError.t2ScholaAPIError(errorResponse)))
+                } else {
+                    completionHandler(.failure(APIClientError.responseDecode(error)))
+                }
             }
         }
         
@@ -54,19 +67,19 @@ struct APIClientImpl: APIClient {
 #if DEBUG
 struct APIClientMock: APIClient {
     private let mockData: [(Any.Type, Any)]
-    private let error: Error?
+    private let error: APIClientError?
 
     init(mockData: [(Any.Type, Any)]) {
         self.mockData = mockData
         self.error = nil
     }
 
-    init(error: Error) {
+    init(error: APIClientError) {
         self.mockData = []
         self.error = error
     }
 
-    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, Error>) -> Void) {
+    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, APIClientError>) -> Void) {
         if let error = self.error {
             completionHandler(.failure(error))
         }

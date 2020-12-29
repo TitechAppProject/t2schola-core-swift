@@ -20,6 +20,12 @@ struct SiteInfoRequest: RestAPIRequest {
     }
 }
 
-struct SiteInfoResponse: Decodable {
-    let userid: Int
+public struct SiteInfoResponse {
+    public let userid: Int
+    public let username: String
+    public let fullname: String
+    public let firstname: String
+    public let lastname: String
 }
+
+extension SiteInfoResponse: Decodable {}
