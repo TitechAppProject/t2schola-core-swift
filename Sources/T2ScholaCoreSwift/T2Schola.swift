@@ -3,13 +3,17 @@ import Foundation
 import FoundationNetworking
 #endif
 
+public enum T2ScholaError: Error {
+    
+}
+
 public struct T2Schola {
     let apiClient: APIClient
     
-    public init() {
-        self.apiClient =  APIClientImpl()
+    public init(urlSession: URLSession = .shared) {
+        self.apiClient =  APIClientImpl(urlSession: urlSession)
     }
-    
+
     init(apiClient: APIClient) {
         self.apiClient = apiClient
     }

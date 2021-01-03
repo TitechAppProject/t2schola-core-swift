@@ -29,10 +29,16 @@ struct T2ScholaAPIErrorResponse: Decodable {
 }
 
 struct APIClientImpl: APIClient {
+    private let urlSession: URLSession
+    
+    init(urlSession: URLSession = .shared) {
+        self.urlSession = urlSession
+    }
+    
     func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, APIClientError>) -> Void) {
         let urlRequest = request.generate()
 
-        let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+        let task = urlSession.dataTask(with: urlRequest) { (data, response, error) in
             if let error = error {
                 completionHandler(.failure(APIClientError.network(error)))
                 return
