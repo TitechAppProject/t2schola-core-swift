@@ -3,9 +3,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
-public enum T2ScholaError: Error {
-    
-}
+
 
 public struct T2Schola {
     let apiClient: APIClient

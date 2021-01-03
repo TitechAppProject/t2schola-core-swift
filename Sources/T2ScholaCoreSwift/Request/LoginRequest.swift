@@ -4,6 +4,12 @@ import Kanna
 import FoundationNetworking
 #endif
 
+public enum T2ScholaLoginError: Error {
+    case parseHtml
+    case parseUrlScheme
+    case parseToken
+}
+
 struct LoginRequest: T2ScholaRequest {
     typealias RequestBody = Void
     
@@ -26,8 +32,7 @@ struct LoginRequest: T2ScholaRequest {
                 return nil
             }
         }() else {
-//            throw NSError()
-            fatalError()
+            throw T2ScholaLoginError.parseHtml
         }
         
         guard
@@ -35,7 +40,7 @@ struct LoginRequest: T2ScholaRequest {
             let href = launchapp["href"],
             let decodedData = Data(base64Encoded: href.replacingOccurrences(of: "mmt2schola://token=", with: "")),
             let decodedStr = String(data: decodedData, encoding: .utf8) else {
-            fatalError()
+            throw T2ScholaLoginError.parseToken
         }
         
         
@@ -44,7 +49,7 @@ struct LoginRequest: T2ScholaRequest {
         if splitedToken.count > 2 {
             return LoginResponse(wsToken: splitedToken[1])
         } else {
-            fatalError()
+            throw T2ScholaLoginError.parseToken
         }
     }
     
