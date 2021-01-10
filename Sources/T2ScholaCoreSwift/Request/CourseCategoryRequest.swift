@@ -30,4 +30,4 @@ public struct CourseCategoryResponse {
     public let path: String
 }
 
-extension CourseCategoryResponse: Decodable {}
+extension CourseCategoryResponse: Codable {}
