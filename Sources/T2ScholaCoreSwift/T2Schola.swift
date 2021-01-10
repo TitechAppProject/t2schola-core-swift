@@ -8,10 +8,7 @@ import FoundationNetworking
 public struct T2Schola {
     let apiClient: APIClient
     
-    public init(urlSession: URLSession = .shared, isMock: Bool = false) {
-        if isMock {
-            changeToMock()
-        }
+    public init(urlSession: URLSession = .shared) {
         self.apiClient =  APIClientImpl(urlSession: urlSession)
     }
 
@@ -61,5 +58,9 @@ public struct T2Schola {
                 completionHandler(.failure(error))
             }
         }
+    }
+    
+    public static func changeToMock() {
+        changeToMockBaseHost()
     }
 }
