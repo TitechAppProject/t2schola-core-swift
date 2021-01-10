@@ -28,4 +28,4 @@ public struct SiteInfoResponse {
     public let lastname: String
 }
 
-extension SiteInfoResponse: Decodable {}
+extension SiteInfoResponse: Codable {}

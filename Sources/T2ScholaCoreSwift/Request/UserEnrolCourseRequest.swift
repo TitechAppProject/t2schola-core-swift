@@ -32,4 +32,4 @@ public struct UserEnrolCourseResponse {
     public let enddate: Date
 }
 
-extension UserEnrolCourseResponse: Decodable {}
+extension UserEnrolCourseResponse: Codable {}
