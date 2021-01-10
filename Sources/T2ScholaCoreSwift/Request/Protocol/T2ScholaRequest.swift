@@ -8,7 +8,7 @@ extension T2ScholaRequest {
     }
 }
 
-static var baseHost = "t2schola.titech.ac.jp"
+var baseHost = "t2schola.titech.ac.jp"
 
 func changeToMock() {
     baseHost = "nj2ohjnd59.execute-api.ap-northeast-1.amazonaws.com"
