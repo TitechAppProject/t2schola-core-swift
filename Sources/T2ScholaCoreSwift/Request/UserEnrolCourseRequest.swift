@@ -11,7 +11,7 @@ struct UserEnrolCoursesRequest: RestAPIRequest {
     
     let queryParameters: [String: Any]?
     
-    init(userId: String, wsToken: String) {
+    init(userId: Int, wsToken: String) {
         queryParameters = [
             "moodlewsrestformat" : "json",
             "wstoken" : wsToken,

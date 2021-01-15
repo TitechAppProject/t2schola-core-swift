@@ -39,6 +39,10 @@ struct APIClientImpl: APIClient {
         let urlRequest = request.generate()
 
         let task = urlSession.dataTask(with: urlRequest) { (data, response, error) in
+            #if DEBUG
+            print("\((response as? HTTPURLResponse)?.statusCode ?? 0) \(urlRequest.httpMethod ?? "") \(urlRequest.url?.absoluteString ?? "")")
+            #endif
+            
             if let error = error {
                 completionHandler(.failure(APIClientError.network(error)))
                 return
