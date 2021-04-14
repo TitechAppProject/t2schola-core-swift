@@ -63,10 +63,13 @@ case .courseContents:
                         t2Schola.getCourseContents(courseId: course.id, wsToken: wsToken) { result in
                             switch result {
                             case let .success(contents):
-                                print(contents)
+//                                print(contents)
                                 contents.forEach { content in
+                                    print(content.name + " module count:" + "\(content.modules.count)")
                                     content.modules.forEach { module in
-                                        print("\(module.modname) \(module.contents?.count ?? -1)")
+                                        print("  " + module.name)
+                                        print("    " + "\(module.modname) \(module.contents?.count ?? -1)")
+                                        print("      " + (module.description ?? ""))
                                     }
                                 }
 //                                exit(0)

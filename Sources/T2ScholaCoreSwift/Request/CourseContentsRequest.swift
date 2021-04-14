@@ -75,7 +75,7 @@ public struct CourseContentModuleContent: Codable {
     public let type: CourseContentModuleContentType
     public let filename: String
     public let filepath: String?
-    public let filesize: Int
+    public let filesize: UInt64
     public let fileurl: URL?
     public let timecreated: Date?
     public let timemodified: Date?
