@@ -26,6 +26,7 @@ public typealias CourseContentsResponse = [CourseContentResponse]
 public struct CourseContentResponse {
     public let id: Int
     public let name: String
+    public let summary: String
     public let modules: [CourseContentModule]
 }
 

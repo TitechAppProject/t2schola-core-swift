@@ -3,8 +3,6 @@ import Foundation
 import FoundationNetworking
 #endif
 
-
-
 public struct T2Schola {
     let apiClient: APIClient
     
