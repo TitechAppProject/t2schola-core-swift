@@ -69,6 +69,39 @@ public struct T2Schola {
         }
     }
     
+    public func getAssignments(wsToken: String, completionHandler: @escaping (Result<AssignmentsResponse, Error>) -> Void) {
+        apiClient.send(request: AssignmentsRequest(wsToken: wsToken)) { result in
+            switch result {
+            case let .success(response):
+                completionHandler(.success(response))
+            case let .failure(error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    public func getAssignmentSubmissionStatus(assignmentId: Int, userId: Int, wsToken: String, completionHandler: @escaping (Result<AssignmentSubmissionStatusResponse, Error>) -> Void) {
+        apiClient.send(request: AssignmentSubmissionStatusRequest(assignmentId: assignmentId, userId: userId, wsToken: wsToken)) { result in
+            switch result {
+            case let .success(response):
+                completionHandler(.success(response))
+            case let .failure(error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
+    public func updateActivityCompletionStatusManually(moduleId: Int, completed: Bool, wsToken: String, completionHandler: @escaping (Result<UpdateActivityCompletionStatusManuallyResponse, Error>) -> Void) {
+        apiClient.send(request: UpdateActivityCompletionStatusManuallyRequest(moduleId: moduleId, completed: completed, wsToken: wsToken)) { result in
+            switch result {
+            case let .success(response):
+                completionHandler(.success(response))
+            case let .failure(error):
+                completionHandler(.failure(error))
+            }
+        }
+    }
+    
     public static func changeToMock() {
         changeToMockBaseHost()
     }

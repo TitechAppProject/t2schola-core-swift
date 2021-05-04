@@ -13,10 +13,10 @@ import FoundationNetworking
 enum RunType {
     case login
     case courseContents
+    case assignments
 }
 
-let runType: RunType = .courseContents
-
+let runType: RunType = .assignments
 
 let t2Schola =  T2Schola()
 
@@ -91,10 +91,45 @@ case .courseContents:
             exit(1)
         }
     }
+case .assignments:
+    print("Please input your wsToken: ", terminator:"")
+    let wsToken = readLine()!
     
-    RunLoop.current.run()
+    t2Schola.getSiteInfo(wsToken: wsToken) { result in
+        switch result {
+        case let .success(info):
+            t2Schola.getAssignments(wsToken: wsToken) { result in
+                switch result {
+                case let .success(assignments):
+                    assignments.courses.forEach { course in
+                        course.assignments.forEach { assignment in
+                            print(assignment.name)
+                            t2Schola.getAssignmentSubmissionStatus(assignmentId: assignment.id, userId: info.userid, wsToken: wsToken) { result in
+                                switch result {
+                                case let .success(status):
+                                    print("\(assignment.name) status: \(status.lastattempt?.submission?.status.rawValue ?? "")")
+                                    
+                                case let .failure(error):
+                                    print("error \(error)")
+                                    exit(1)
+                                }
+                            }
+                        }
+                    }
+                    
+                case let .failure(error):
+                    print("error \(error)")
+                    exit(1)
+                }
+            }
+        case let .failure(error):
+            print("error \(error)")
+            exit(1)
+        }
+    }
 }
 
+RunLoop.current.run()
 
 
 

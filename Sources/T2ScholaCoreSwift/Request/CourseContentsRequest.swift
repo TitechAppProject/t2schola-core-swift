@@ -23,16 +23,14 @@ struct CourseContentsRequest: RestAPIRequest {
 
 public typealias CourseContentsResponse = [CourseContentResponse]
 
-public struct CourseContentResponse {
+public struct CourseContentResponse: Codable {
     public let id: Int
     public let name: String
     public let summary: String
     public let modules: [CourseContentModule]
 }
 
-extension CourseContentResponse: Codable {}
-
-public struct CourseContentModule {
+public struct CourseContentModule: Codable {
     public let id: Int
     public let modname: CourseContentModuleName
     public let url: URL?
@@ -40,10 +38,14 @@ public struct CourseContentModule {
     public let description: String?
     public let modicon: URL
     public let modplural: String
+    public let completion: Int
+    public let completiondata: CourseContentModuleCompletionData?
     public let contents: [CourseContentModuleContent]?
 }
 
-extension CourseContentModule: Codable {}
+public struct CourseContentModuleCompletionData: Codable {
+    public let state: Int
+}
 
 public enum CourseContentModuleName: String, Codable {
     case page
