@@ -52,7 +52,11 @@ extension Request where RequestBody == EmptyRequestBody {
 
 extension Request {
     public var headerFields: [String: String]? {
-        var header = [String: String]()
+        var header: [String: String] = [
+            "Host": "t2schola.titech.ac.jp",
+            "User-Agent": "Mozilla/5.0 (iPad; CPU OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MoodleMobile t2schola"
+        ]
+
         if requestBody is Encodable {
             header["Content-Type"] = "application/json"
         } else if requestBody is MultipartFormDataBody {
