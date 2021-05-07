@@ -15,7 +15,7 @@ struct UpdateActivityCompletionStatusManuallyRequest: RestAPIRequest {
         queryParameters = [
             "moodlewsrestformat" : "json",
             "wstoken" : wsToken,
-            "wsfunction" : "mod_assign_get_assignments",
+            "wsfunction" : "core_completion_update_activity_completion_status_manually",
             "cmid": moduleId,
             "completed": completed ? 1 : 0
         ]
