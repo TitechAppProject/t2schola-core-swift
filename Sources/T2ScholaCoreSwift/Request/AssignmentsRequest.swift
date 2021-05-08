@@ -62,7 +62,7 @@ public struct AssignmentResponse: Codable {
     public let markingallocation: Int // Enable marking allocation.
     public let requiresubmissionstatement: Int // Student must accept submission statement.
     public let preventsubmissionnotingroup: Int? // @since 3.2. Prevent submission not in group.
-    public let submissionstatement: Int? // @since 3.2. Submission statement formatted.
+    public let submissionstatement: String? // @since 3.2. Submission statement formatted.
     public let submissionstatementformat: Int? // @since 3.2. Submissionstatement format (1 = HTML, 0 = MOODLE, 2 = PLAIN or 4 = MARKDOWN).
 //    public let configs: AddonModAssignConfig[]; // Configuration settings.
     public let intro: String? // Assignment intro, not allways returned because it deppends on the activity configuration.
