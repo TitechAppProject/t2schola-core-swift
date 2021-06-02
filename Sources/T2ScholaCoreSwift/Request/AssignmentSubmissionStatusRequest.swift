@@ -36,7 +36,7 @@ public struct AssignmentSubmissionLastAttempt: Codable {
 
 
 public struct AssignmentSubmissionFeedback: Codable {
-    public let grade: AssignmentSubmissionGrade // Grade information.
+    public let grade: AssignmentSubmissionGrade? // Grade information.
     public let gradefordisplay: String? // Grade rendered into a format suitable for display.
     public let gradeddate: Date? // The date the user was graded.
 //    public let plugins: [AddonModAssignPlugin]? // Plugins info.
