@@ -16,9 +16,10 @@ enum RunType {
     case assignments
 }
 
-let runType: RunType = .assignments
+let runType: RunType = .login
 
 let t2Schola =  T2Schola()
+// T2Schola.changeToMock()
 
 switch runType {
 case .login:
@@ -30,14 +31,14 @@ case .login:
         HTTPCookie(
             properties: [
                 .name: "AUTH_SESSION_ID",
-                .domain: ".titech.ac.jp",
+                .domain: "\(T2Schola.currentHost)",
                 .path: "/",
                 .value: authSessionId
             ]
         )!
     ]
 
-    URLSession.shared.configuration.httpCookieStorage?.setCookies(cookies, for: URL(string: "https://t2schola.titech.ac.jp")!, mainDocumentURL: nil)
+    URLSession.shared.configuration.httpCookieStorage?.setCookies(cookies, for: URL(string: "https://\(T2Schola.currentHost)")!, mainDocumentURL: nil)
     
     t2Schola.getToken() { result in
         switch result {

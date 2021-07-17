@@ -105,4 +105,8 @@ public struct T2Schola {
     public static func changeToMock() {
         changeToMockBaseHost()
     }
+    
+    public static var currentHost: String {
+        baseHost
+    }
 }

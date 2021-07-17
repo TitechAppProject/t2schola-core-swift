@@ -11,5 +11,5 @@ extension T2ScholaRequest {
 var baseHost = "t2schola.titech.ac.jp"
 
 func changeToMockBaseHost() {
-    baseHost = "nj2ohjnd59.execute-api.ap-northeast-1.amazonaws.com"
+    baseHost = "t2schola-mock.titech.app"
 }
