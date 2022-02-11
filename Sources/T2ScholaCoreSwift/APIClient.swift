@@ -11,7 +11,7 @@ import FoundationNetworking
 #endif
 
 protocol APIClient {
-    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, APIClientError>) -> Void)
+    func send<R>(request: R) async throws -> R.Response where R: Request
 }
 
 enum APIClientError: Error {
@@ -35,42 +35,28 @@ struct APIClientImpl: APIClient {
         self.urlSession = urlSession
     }
     
-    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, APIClientError>) -> Void) {
+    func send<R>(request: R) async throws -> R.Response where R: Request {
         let urlRequest = request.generate()
+        
+        let (data, response) = try await urlSession.data(for: urlRequest, delegate: nil)
 
-        let task = urlSession.dataTask(with: urlRequest) { (data, response, error) in
-            #if DEBUG
-            print("\((response as? HTTPURLResponse)?.statusCode ?? 0) \(urlRequest.httpMethod ?? "") \(urlRequest.url?.absoluteString ?? "")")
-            #endif
-            
-            if let error = error {
-                completionHandler(.failure(APIClientError.network(error)))
-                return
-            }
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIClientError.noResponse
+        }
 
-            guard let response = response as? HTTPURLResponse, let data = data else {
-                completionHandler(.failure(APIClientError.noResponse))
-                return
-            }
+        guard (200..<300).contains(httpResponse.statusCode) else {
+            throw APIClientError.invalidStatusCode(httpResponse.statusCode)
+        }
 
-            guard (200..<300).contains(response.statusCode) else {
-                completionHandler(.failure(APIClientError.invalidStatusCode(response.statusCode)))
-                return
-            }
-
-            do {
-                completionHandler(.success(try request.decode(data: data)))
-            } catch {
-                if let errorResponse = try? JSONDecoder().decode(T2ScholaAPIErrorResponse.self, from: data) {
-                    completionHandler(.failure(APIClientError.t2ScholaAPIError(errorResponse)))
-                } else {
-                    completionHandler(.failure(APIClientError.responseDecode(error)))
-                }
+        do {
+            return try request.decode(data: data)
+        } catch {
+            if let errorResponse = try? JSONDecoder().decode(T2ScholaAPIErrorResponse.self, from: data) {
+                throw APIClientError.t2ScholaAPIError(errorResponse)
+            } else {
+                throw APIClientError.responseDecode(error)
             }
         }
-        
-        task.resume()
-        
     }
 }
 
@@ -89,18 +75,17 @@ struct APIClientMock: APIClient {
         self.error = error
     }
 
-    func send<R: Request>(request: R, completionHandler: @escaping (Result<R.Response, APIClientError>) -> Void) {
+    func send<R>(request: R) async throws -> R.Response where R: Request {
         if let error = self.error {
-            completionHandler(.failure(error))
+            throw error
         }
-
-        self.mockData.forEach { (key, value) in
+        
+        for (key, value) in self.mockData {
             if R.self == key, let value = value as? R.Response {
-                completionHandler(.success(value))
-                return
+                return value
             }
         }
-//        completionHandler(.failure(NSError()))
+
         fatalError()
     }
 }

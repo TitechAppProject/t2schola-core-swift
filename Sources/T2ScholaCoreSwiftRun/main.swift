@@ -26,7 +26,6 @@ case .login:
     print("Please input your titech portal AUTH_SESSION_ID cookie: ", terminator:"")
     let authSessionId = readLine()!
 
-
     let cookies: [HTTPCookie] = [
         HTTPCookie(
             properties: [
@@ -39,13 +38,12 @@ case .login:
     ]
 
     URLSession.shared.configuration.httpCookieStorage?.setCookies(cookies, for: URL(string: "https://\(T2Schola.currentHost)")!, mainDocumentURL: nil)
-    
-    t2Schola.getToken() { result in
-        switch result {
-        case let .success(wsToken):
+    Task {
+        do {
+            let wsToken = try await t2Schola.getToken()
             print("success, your wsToken is \(wsToken)")
             exit(0)
-        case let .failure(error):
+        } catch {
             print("error \(error)")
             exit(1)
         }
@@ -54,40 +52,23 @@ case .courseContents:
     print("Please input your wsToken: ", terminator:"")
     let wsToken = readLine()!
     
-    t2Schola.getSiteInfo(wsToken: wsToken) { result in
-        switch result {
-        case let .success(info):
-            t2Schola.getUserCourses(userId: info.userid, wsToken: wsToken) { result in
-                switch result {
-                case let .success(courses):
-                    courses.forEach { course in
-                        t2Schola.getCourseContents(courseId: course.id, wsToken: wsToken) { result in
-                            switch result {
-                            case let .success(contents):
-//                                print(contents)
-                                contents.forEach { content in
-                                    print(content.name + " module count:" + "\(content.modules.count)")
-                                    content.modules.forEach { module in
-                                        print("  " + module.name)
-                                        print("    " + "\(module.modname) \(module.contents?.count ?? -1)")
-                                        print("      " + (module.description ?? ""))
-                                    }
-                                }
-//                                exit(0)
-                            case let .failure(error):
-                                print("error \(error)")
-                                exit(1)
-                            }
-                        }
+    Task {
+        do {
+            let info = try await t2Schola.getSiteInfo(wsToken: wsToken)
+            let courses = try await t2Schola.getUserCourses(userId: info.userid, wsToken: wsToken)
+            for course in courses {
+                let contents = try await t2Schola.getCourseContents(courseId: course.id, wsToken: wsToken)
+                contents.forEach { content in
+                    print(content.name + " module count:" + "\(content.modules.count)")
+                    content.modules.forEach { module in
+                        print("  " + module.name)
+                        print("    " + "\(module.modname) \(module.contents?.count ?? -1)")
+                        print("      " + (module.description ?? ""))
                     }
-                    
-                case let .failure(error):
-                    print("error \(error)")
-                    exit(1)
                 }
             }
-            
-        case let .failure(error):
+            exit(0)
+        } catch {
             print("error \(error)")
             exit(1)
         }
@@ -96,34 +77,18 @@ case .assignments:
     print("Please input your wsToken: ", terminator:"")
     let wsToken = readLine()!
     
-    t2Schola.getSiteInfo(wsToken: wsToken) { result in
-        switch result {
-        case let .success(info):
-            t2Schola.getAssignments(wsToken: wsToken) { result in
-                switch result {
-                case let .success(assignments):
-                    assignments.courses.forEach { course in
-                        course.assignments.forEach { assignment in
-                            print(assignment.name)
-                            t2Schola.getAssignmentSubmissionStatus(assignmentId: assignment.id, userId: info.userid, wsToken: wsToken) { result in
-                                switch result {
-                                case let .success(status):
-                                    print("\(assignment.name) status: \(status.lastattempt?.submission?.status.rawValue ?? "")")
-                                    
-                                case let .failure(error):
-                                    print("error \(error)")
-                                    exit(1)
-                                }
-                            }
-                        }
-                    }
-                    
-                case let .failure(error):
-                    print("error \(error)")
-                    exit(1)
+    Task {
+        do {
+            let info = try await t2Schola.getSiteInfo(wsToken: wsToken)
+            let assignments = try await t2Schola.getAssignments(wsToken: wsToken)
+            for course in assignments.courses {
+                for assignment in course.assignments {
+                    let status = try await t2Schola.getAssignmentSubmissionStatus(assignmentId: assignment.id, userId: info.userid, wsToken: wsToken)
+                    print("\(assignment.name) status: \(status.lastattempt?.submission?.status.rawValue ?? "")")
                 }
             }
-        case let .failure(error):
+            exit(0)
+        } catch {
             print("error \(error)")
             exit(1)
         }
