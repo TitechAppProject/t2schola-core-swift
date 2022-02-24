@@ -14,7 +14,7 @@ protocol APIClient {
     func send<R>(request: R) async throws -> R.Response where R: Request
 }
 
-enum APIClientError: Error {
+public enum APIClientError: Error {
     case network(_ errro: Error)
     case noResponse
     case t2ScholaAPIError(_ response: T2ScholaAPIErrorResponse)
@@ -22,7 +22,7 @@ enum APIClientError: Error {
     case responseDecode(_ errro: Error)
 }
 
-struct T2ScholaAPIErrorResponse: Decodable {
+public struct T2ScholaAPIErrorResponse: Decodable {
     let errorcode: String
     let exception: String
     let message: String
