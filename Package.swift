@@ -25,7 +25,7 @@ let package = Package(
         .target(
             name: "T2ScholaCoreSwift",
             dependencies: ["Kanna"]),
-        .target(
+        .executableTarget(
             name: "T2ScholaCoreSwiftRun",
             dependencies: [
                 "T2ScholaCoreSwift"
