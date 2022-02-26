@@ -30,15 +30,17 @@ public struct T2ScholaAPIErrorResponse: Decodable {
 
 struct APIClientImpl: APIClient {
     private let urlSession: URLSession
+    private let urlSessionDelegate: URLSessionTaskDelegate
     
     init(urlSession: URLSession = .shared) {
         self.urlSession = urlSession
+        self.urlSessionDelegate = HTTPClientDelegate()
     }
     
     func send<R>(request: R) async throws -> R.Response where R: Request {
         let urlRequest = request.generate()
         
-        let (data, response) = try await urlSession.data(for: urlRequest, delegate: nil)
+        let (data, response) = try await urlSession.data(for: urlRequest, delegate: urlSessionDelegate)
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIClientError.noResponse
@@ -57,6 +59,38 @@ struct APIClientImpl: APIClient {
                 throw APIClientError.responseDecode(error)
             }
         }
+    }
+}
+
+class HTTPClientDelegate: URLProtocol, URLSessionTaskDelegate {
+    func urlSession(
+        _ session: URLSession,
+        task: URLSessionTask,
+        willPerformHTTPRedirection response: HTTPURLResponse,
+        newRequest request: URLRequest,
+        completionHandler: @escaping (URLRequest?) -> Swift.Void
+    ) {
+        #if DEBUG
+            print("")
+            print("\(response.statusCode) \(task.currentRequest?.httpMethod ?? "") \(task.currentRequest?.url?.absoluteString ?? "")")
+            print("  requestHeader: \(task.currentRequest?.allHTTPHeaderFields ?? [:])")
+            print("  requestBody: \(String(data: task.originalRequest?.httpBody ?? Data(), encoding: .utf8) ?? "")")
+            print("  responseHeader: \(response.allHeaderFields)")
+            print("  redirect -> \(request.httpMethod ?? "") \(request.url?.absoluteString ?? "")")
+            print("")
+        #endif
+        
+        completionHandler(request)
+    }
+
+    func urlSession(_: URLSession, task: URLSessionTask, didFinishCollecting _: URLSessionTaskMetrics) {
+        #if DEBUG
+            print("")
+            print("200 \(task.currentRequest!.httpMethod!) \(task.currentRequest!.url!.absoluteString)")
+            print("  requestHeader: \(task.currentRequest!.allHTTPHeaderFields ?? [:])")
+            print("  requestBody: \(String(data: task.originalRequest!.httpBody ?? Data(), encoding: .utf8) ?? "")")
+            print("")
+        #endif
     }
 }
 
