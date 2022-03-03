@@ -23,9 +23,9 @@ public enum APIClientError: Error {
 }
 
 public struct T2ScholaAPIErrorResponse: Decodable {
-    let errorcode: String
-    let exception: String
-    let message: String
+    public let errorcode: String
+    public let exception: String
+    public let message: String
 }
 
 struct APIClientImpl: APIClient {
