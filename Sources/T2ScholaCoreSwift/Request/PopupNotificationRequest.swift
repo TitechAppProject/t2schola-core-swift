@@ -11,7 +11,7 @@ struct PopupNotificationRequest: RestAPIRequest {
     
     let queryParameters: [String: Any]?
     
-    init(wsToken: String, userId: Int) {
+    init(userId: Int, wsToken: String) {
         queryParameters = [
             "moodlewsrestformat" : "json",
             "wstoken" : wsToken,

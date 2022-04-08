@@ -47,7 +47,11 @@ public struct T2Schola {
     }
     
     public func getPopupNotification(userId: Int, wsToken: String) async throws -> PopupNotificationResponse {
-        try await apiClient.send(request: PopupNotificationRequest(wsToken: wsToken, userId: userId))
+        try await apiClient.send(request: PopupNotificationRequest(userId: userId, wsToken: wsToken))
+    }
+    
+    public func markNotificationRead(notificationId: Int, wsToken: String) async throws -> NotificationReadResponse {
+        try await apiClient.send(request: NotificationReadRequest(notificationId: notificationId, wsToken: wsToken))
     }
     
     public static func changeToMock() {

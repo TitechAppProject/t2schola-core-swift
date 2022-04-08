@@ -14,12 +14,13 @@ enum RunType {
     case login
     case courseContents
     case assignments
-    case notifications
+    case getNotifications
+    case markNotificationAsRead
 }
 
-let runType: RunType = .notifications
+let runType: RunType = .markNotificationAsRead
 
-let t2Schola =  T2Schola()
+let t2Schola = T2Schola()
 // T2Schola.changeToMock()
 
 switch runType {
@@ -94,7 +95,7 @@ case .assignments:
             exit(1)
         }
     }
-case .notifications:
+case .getNotifications:
     print("Please input your wsToken: ", terminator:"")
     let wsToken = readLine()!
     
@@ -112,6 +113,25 @@ case .notifications:
             exit(1)
         }
     }
+case .markNotificationAsRead:
+    print("Please input your wsToken: ", terminator:"")
+    let wsToken = readLine()!
+    print("Please input notification id to mark as read: ", terminator:"")
+    let notificationId = Int(readLine()!)!
+    
+    Task {
+        do {
+            let response = try await t2Schola.markNotificationRead(notificationId: notificationId, wsToken: wsToken)
+            if (response.warnings.count == 0) {
+                print("Successfully marked")
+            }
+            exit(0)
+        } catch {
+            print("error \(error)")
+            exit(1)
+        }
+    }
 }
+
 
 RunLoop.current.run()
