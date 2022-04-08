@@ -46,6 +46,10 @@ public struct T2Schola {
         try await apiClient.send(request: UpdateActivityCompletionStatusManuallyRequest(moduleId: moduleId, completed: completed, wsToken: wsToken))
     }
     
+    public func getPopupNotification(userId: Int, wsToken: String) async throws -> PopupNotificationResponse {
+        try await apiClient.send(request: PopupNotificationRequest(wsToken: wsToken, userId: userId))
+    }
+    
     public static func changeToMock() {
         changeToMockBaseHost()
     }

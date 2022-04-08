@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by nanashiki on 2020/12/13.
 //
@@ -14,9 +14,10 @@ enum RunType {
     case login
     case courseContents
     case assignments
+    case notifications
 }
 
-let runType: RunType = .login
+let runType: RunType = .notifications
 
 let t2Schola =  T2Schola()
 // T2Schola.changeToMock()
@@ -93,9 +94,24 @@ case .assignments:
             exit(1)
         }
     }
+case .notifications:
+    print("Please input your wsToken: ", terminator:"")
+    let wsToken = readLine()!
+    
+    Task {
+        do {
+            let info = try await t2Schola.getSiteInfo(wsToken: wsToken)
+            let notifications = try await t2Schola.getPopupNotification(userId: info.userid, wsToken: wsToken)
+            print("unread notification count: \(notifications.unreadcount)")
+            for message in notifications.notifications {
+                print(message.read ? "[read] \(message.subject)" : "[unread] \(message.subject)")
+            }
+            exit(0)
+        } catch {
+            print("error \(error)")
+            exit(1)
+        }
+    }
 }
 
 RunLoop.current.run()
-
-
-
