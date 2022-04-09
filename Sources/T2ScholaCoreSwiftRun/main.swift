@@ -18,7 +18,7 @@ enum RunType {
     case markNotificationAsRead
 }
 
-let runType: RunType = .markNotificationAsRead
+let runType: RunType = .getNotifications
 
 let t2Schola = T2Schola()
 // T2Schola.changeToMock()
@@ -122,7 +122,7 @@ case .markNotificationAsRead:
     Task {
         do {
             let response = try await t2Schola.markNotificationRead(notificationId: notificationId, wsToken: wsToken)
-            if (response.warnings.count == 0) {
+            if (response.warnings?.count == 0) {
                 print("Successfully marked")
             }
             exit(0)
