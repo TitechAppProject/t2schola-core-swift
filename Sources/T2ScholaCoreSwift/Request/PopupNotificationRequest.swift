@@ -44,7 +44,7 @@ public struct PopupNotification: Codable {
     public let contexturlname: String // Context URL link name.
     public let timecreated: Int // Time created.
     public let timecreatedpretty: String // Time created in a pretty format.
-    public let timeread: Int // Time read.
+    public let timeread: Int? // Time read.
     public let read: Bool // Notification read status.
     public let deleted: Bool // Notification deletion status.
     public let iconurl: String // URL for notification icon.
