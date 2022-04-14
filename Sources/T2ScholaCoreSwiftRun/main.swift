@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by nanashiki on 2020/12/13.
 //
@@ -14,11 +14,13 @@ enum RunType {
     case login
     case courseContents
     case assignments
+    case getNotifications
+    case markNotificationAsRead
 }
 
-let runType: RunType = .login
+let runType: RunType = .getNotifications
 
-let t2Schola =  T2Schola()
+let t2Schola = T2Schola()
 // T2Schola.changeToMock()
 
 switch runType {
@@ -93,9 +95,43 @@ case .assignments:
             exit(1)
         }
     }
+case .getNotifications:
+    print("Please input your wsToken: ", terminator:"")
+    let wsToken = readLine()!
+    
+    Task {
+        do {
+            let info = try await t2Schola.getSiteInfo(wsToken: wsToken)
+            let notifications = try await t2Schola.getPopupNotification(userId: info.userid, wsToken: wsToken)
+            print("unread notification count: \(notifications.unreadcount)")
+            for message in notifications.notifications {
+                print(message.read ? "[read] \(message.subject)" : "[unread] \(message.subject)")
+            }
+            exit(0)
+        } catch {
+            print("error \(error)")
+            exit(1)
+        }
+    }
+case .markNotificationAsRead:
+    print("Please input your wsToken: ", terminator:"")
+    let wsToken = readLine()!
+    print("Please input notification id to mark as read: ", terminator:"")
+    let notificationId = Int(readLine()!)!
+    
+    Task {
+        do {
+            let response = try await t2Schola.markNotificationRead(notificationId: notificationId, wsToken: wsToken)
+            if (response.warnings?.count == 0) {
+                print("Successfully marked")
+            }
+            exit(0)
+        } catch {
+            print("error \(error)")
+            exit(1)
+        }
+    }
 }
 
+
 RunLoop.current.run()
-
-
-
