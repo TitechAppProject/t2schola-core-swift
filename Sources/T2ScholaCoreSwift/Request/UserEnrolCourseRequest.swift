@@ -42,10 +42,10 @@ public struct UserEnrolCourseResponse {
     public let enrolledusercount: Int? // Number of enrolled users in this course.
     public let completionhascriteria: Bool? // If completion criteria is set.
     public let completionusertracked: Bool? // If the user is completion tracked.
-    public let progress: Int? // Progress percentage.
+    public let progress: Double? // Progress percentage.
     public let completed: Bool? // Whether the course is completed.
     public let marker: Int? // Course section marker.
-    public let lastaccess: Int? // Last access to the course (timestamp).
+    public let lastaccess: Date? // Last access to the course (timestamp).
     public let isfavourite: Bool? // If the user marked this course a favourite.
     public let hidden: Bool? // If the user hide the course from the dashboard.
 //    public let overviewfiles?: CoreWSExternalFile[]
