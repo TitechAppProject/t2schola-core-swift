@@ -15,7 +15,6 @@ protocol APIClient {
 }
 
 public enum APIClientError: Error {
-    case network(_ error: Error)
     case noResponse
     case t2ScholaAPIError(_ response: T2ScholaAPIErrorResponse)
     case invalidStatusCode(_ code: Int)
