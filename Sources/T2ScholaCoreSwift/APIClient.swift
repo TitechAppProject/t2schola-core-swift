@@ -29,11 +29,15 @@ public struct T2ScholaAPIErrorResponse: Decodable {
 
 struct APIClientImpl: APIClient {
     private let urlSession: URLSession
+    #if !canImport(FoundationNetworking)
     private let urlSessionDelegate: URLSessionTaskDelegate
+    #endif
     
     init(urlSession: URLSession = .shared) {
         self.urlSession = urlSession
+        #if !canImport(FoundationNetworking)
         self.urlSessionDelegate = HTTPClientDelegate()
+        #endif
     }
     
     func send<R>(request: R) async throws -> R.Response where R: Request {
@@ -67,7 +71,7 @@ struct APIClientImpl: APIClient {
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else {
-                    continuation.resume(returning: (data ?? Data(), response))
+                    continuation.resume(returning: (data ?? Data(), response!))
                 }
             }.resume()
         }
