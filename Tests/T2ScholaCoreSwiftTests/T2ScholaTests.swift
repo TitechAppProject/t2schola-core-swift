@@ -12,6 +12,7 @@ final class T2ScholaTests: XCTestCase {
         let courses = try await t2Schola.getUserCourses(userId: info.userid, wsToken: token)
         for course in courses {
             _ = try await t2Schola.getCourseContents(courseId: course.id, wsToken: token)
+            print("Finish Fetch Course Contents: \(course.id)")
         }
     }
 }
