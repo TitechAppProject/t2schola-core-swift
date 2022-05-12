@@ -39,7 +39,7 @@ struct APIClientImpl: APIClient {
     func send<R>(request: R) async throws -> R.Response where R: Request {
         let urlRequest = request.generate()
         
-        let (data, response) = try await urlSession.data(for: urlRequest, delegate: urlSessionDelegate)
+        let (data, response) = try await fetchData(request: urlRequest)
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw APIClientError.noResponse
@@ -58,6 +58,22 @@ struct APIClientImpl: APIClient {
                 throw APIClientError.responseDecode(error)
             }
         }
+    }
+    
+    func fetchData(request: URLRequest) async throws -> (Data, URLResponse) {
+        #if canImport(FoundationNetworking)
+        return try await withCheckedThrowingContinuation { continuation in
+            urlSession.dataTask(with: reqest) { data, response, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume(returning: (data ?? Data(), response))
+                }
+            }.resume()
+        }
+        #else
+        return try await urlSession.data(for: request, delegate: urlSessionDelegate)
+        #endif
     }
 }
 
