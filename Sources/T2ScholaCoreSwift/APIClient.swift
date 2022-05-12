@@ -63,7 +63,7 @@ struct APIClientImpl: APIClient {
     func fetchData(request: URLRequest) async throws -> (Data, URLResponse) {
         #if canImport(FoundationNetworking)
         return try await withCheckedThrowingContinuation { continuation in
-            urlSession.dataTask(with: reqest) { data, response, error in
+            urlSession.dataTask(with: request) { data, response, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else {
