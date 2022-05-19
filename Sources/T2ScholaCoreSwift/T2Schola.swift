@@ -22,6 +22,10 @@ public struct T2Schola {
         try await apiClient.send(request: SiteInfoRequest(wsToken: wsToken))
     }
     
+    public func getUsersByField(userIds: [Int], wsToken: String) async throws -> UsersByFieldResponse {
+        try await apiClient.send(request: UsersByFieldRequest(userIds: userIds, wsToken: wsToken))
+    }
+    
     public func getUserCourses(userId: Int, wsToken: String) async throws -> UserEnrolCoursesResponse {
         try await apiClient.send(request: UserEnrolCoursesRequest(userId: userId, wsToken: wsToken))
     }
