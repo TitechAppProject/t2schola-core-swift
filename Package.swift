@@ -13,10 +13,6 @@ let package = Package(
         .library(
             name: "T2ScholaCoreSwift",
             targets: ["T2ScholaCoreSwift"]),
-        .executable(
-            name: "T2ScholaCoreSwiftRun",
-            targets: ["T2ScholaCoreSwiftRun"]
-        )
     ],
     dependencies: [
         .package(url: "https://github.com/tid-kijyun/Kanna.git", from: "5.2.2"),
@@ -25,11 +21,6 @@ let package = Package(
         .target(
             name: "T2ScholaCoreSwift",
             dependencies: ["Kanna"]),
-        .executableTarget(
-            name: "T2ScholaCoreSwiftRun",
-            dependencies: [
-                "T2ScholaCoreSwift"
-            ]),
         .testTarget(
             name: "T2ScholaCoreSwiftTests",
             dependencies: ["T2ScholaCoreSwift"]),
