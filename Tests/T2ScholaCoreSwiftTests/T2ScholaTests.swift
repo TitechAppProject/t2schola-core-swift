@@ -1,5 +1,9 @@
 import XCTest
 @testable import T2ScholaCoreSwift
+import Foundation
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 final class T2ScholaTests: XCTestCase {
     let authSessionId = "SMS_getaccess03_76f8d8%3A%3Ad9390f42d20e1134507c7c0d9d2effff"
