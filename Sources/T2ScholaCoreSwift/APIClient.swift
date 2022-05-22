@@ -116,15 +116,24 @@ class HTTPClientDelegate: URLProtocol, URLSessionTaskDelegate {
 #if DEBUG
 struct APIClientMock: APIClient {
     private let mockData: [(Any.Type, Any)]
+    private let mockString: String?
     private let error: APIClientError?
 
     init(mockData: [(Any.Type, Any)]) {
         self.mockData = mockData
+        self.mockString = nil
+        self.error = nil
+    }
+
+    init(mockString: String) {
+        self.mockData = []
+        self.mockString = mockString
         self.error = nil
     }
 
     init(error: APIClientError) {
         self.mockData = []
+        self.mockString = nil
         self.error = error
     }
 
@@ -132,7 +141,11 @@ struct APIClientMock: APIClient {
         if let error = self.error {
             throw error
         }
-        
+
+        if let mockString = mockString {
+            return try request.decode(data: mockString.data(using: .utf8)!)
+        }
+
         for (key, value) in self.mockData {
             if R.self == key, let value = value as? R.Response {
                 return value

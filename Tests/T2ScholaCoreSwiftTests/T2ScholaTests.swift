@@ -8,6 +8,7 @@ import FoundationNetworking
 final class T2ScholaTests: XCTestCase {
     let authSessionId = "SMS_getaccess03_76f8d8%3A%3Ad9390f42d20e1134507c7c0d9d2effff"
     let token = "7ea1522182832a9a1ff54d8ed04ed695"
+    let userId = 999
     let userMockServer = true
 
     func testLogin() async throws {
@@ -30,6 +31,51 @@ final class T2ScholaTests: XCTestCase {
         let wsToken = try await t2Schola.getToken()
         XCTAssertEqual(wsToken, token)
     }
+    
+    func testUsersByFieldRequest() async throws {
+        let t2Schola = T2Schola(
+            apiClient: APIClientMock(
+                mockString:
+"""
+[
+  {
+    "id": 999,
+    "username": "00b00000",
+    "fullname": "名無し 太郎 Nanashi Taro",
+    "email": "nanashi.t.aa@m.titech.ac.jp",
+    "department": "",
+    "institution": "Tokyo Institute of Technology",
+    "idnumber": "00B00000",
+    "interests": "アプリ開発, Web開発",
+    "auth": "eltitech",
+    "confirmed": true,
+    "lang": "ja",
+    "theme": "",
+    "timezone": "Asia/Tokyo",
+    "mailformat": 1,
+    "profileimageurlsmall": "https://t2schola.titech.ac.jp/pluginfile.php/999/user/icon/titech/f2",
+    "profileimageurl": "https://t2schola.titech.ac.jp/pluginfile.php/999/user/icon/titech/f1",
+    "customfields": [
+      {
+        "type": "text",
+        "value": "工学院 〇〇系",
+        "name": "所属",
+        "shortname": "belongs"
+      }
+    ],
+    "preferences": []
+  }
+]
+
+"""
+            )
+        )
+
+        let users = try await t2Schola.getUsersByField(userIds: [userId], wsToken: token)
+        
+        XCTAssertEqual(users.count, 1)
+        XCTAssertEqual(users[0].id, 999)
+    }
 
     func testCourseContents() async throws {
         let t2Schola = T2Schola()
@@ -50,7 +96,7 @@ final class T2ScholaTests: XCTestCase {
         let assignments = try await t2Schola.getAssignments(wsToken: token)
         for course in assignments.courses {
             for assignment in course.assignments {
-                let status = try await t2Schola.getAssignmentSubmissionStatus(assignmentId: assignment.id, userId: 999, wsToken: token)
+                let status = try await t2Schola.getAssignmentSubmissionStatus(assignmentId: assignment.id, userId: userId, wsToken: token)
                 print("\(assignment.name) status: \(status.lastattempt?.submission?.status.rawValue ?? "")")
             }
         }
@@ -60,7 +106,7 @@ final class T2ScholaTests: XCTestCase {
 //        let t2Schola = T2Schola()
 //        if userMockServer { T2Schola.changeToMock() }
 //
-//        let notifications = try await t2Schola.getPopupNotification(userId: 999, wsToken: token)
+//        let notifications = try await t2Schola.getPopupNotification(userId: userId, wsToken: token)
 //        print("unread notification count: \(notifications.unreadcount)")
 //        for message in notifications.notifications {
 //            print(message.read ? "[read] \(message.subject)" : "[unread] \(message.subject)")
