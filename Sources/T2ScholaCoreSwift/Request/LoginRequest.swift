@@ -34,25 +34,24 @@ struct LoginRequest: T2ScholaRequest {
         }() else {
             throw T2ScholaLoginError.parseHtml
         }
-        
+
         guard
             let launchapp = doc.css("a#launchapp").first,
             let href = launchapp["href"],
             let decodedData = Data(base64Encoded: href.replacingOccurrences(of: "mmt2schola://token=", with: "")),
             let decodedStr = String(data: decodedData, encoding: .utf8) else {
-            throw T2ScholaLoginError.parseToken
+            throw T2ScholaLoginError.parseUrlScheme
         }
-        
-        
+
         let splitedToken = decodedStr.components(separatedBy: ":::")
-        
+
         if splitedToken.count > 2 {
             return LoginResponse(wsToken: splitedToken[1])
         } else {
             throw T2ScholaLoginError.parseToken
         }
     }
-    
+
     init() {
         queryParameters = [
             "service" : "moodle_mobile_app",
