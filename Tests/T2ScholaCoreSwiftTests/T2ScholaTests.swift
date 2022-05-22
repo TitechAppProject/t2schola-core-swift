@@ -32,12 +32,50 @@ final class T2ScholaTests: XCTestCase {
         XCTAssertEqual(wsToken, token)
     }
     
-//    func testUsersByFieldRequest() async throws {
-//        let t2Schola = T2Schola()
-//        if userMockServer { T2Schola.changeToMock() }
-//
-//        let users = try await t2Schola.getUsersByField(userIds: [userId], wsToken: token)
-//    }
+    func testUsersByFieldRequest() async throws {
+        let t2Schola = T2Schola(
+            apiClient: APIClientMock(
+                mockString:
+"""
+[
+  {
+    "id": 999,
+    "username": "00b00000",
+    "fullname": "名無し 太郎 Nanashi Taro",
+    "email": "nanashi.t.aa@m.titech.ac.jp",
+    "department": "",
+    "institution": "Tokyo Institute of Technology",
+    "idnumber": "00B00000",
+    "interests": "アプリ開発, Web開発",
+    "auth": "eltitech",
+    "confirmed": true,
+    "lang": "ja",
+    "theme": "",
+    "timezone": "Asia/Tokyo",
+    "mailformat": 1,
+    "profileimageurlsmall": "https://t2schola.titech.ac.jp/pluginfile.php/999/user/icon/titech/f2",
+    "profileimageurl": "https://t2schola.titech.ac.jp/pluginfile.php/999/user/icon/titech/f1",
+    "customfields": [
+      {
+        "type": "text",
+        "value": "工学院 〇〇系",
+        "name": "所属",
+        "shortname": "belongs"
+      }
+    ],
+    "preferences": []
+  }
+]
+
+"""
+            )
+        )
+
+        let users = try await t2Schola.getUsersByField(userIds: [userId], wsToken: token)
+        
+        XCTAssertEqual(users.count, 1)
+        XCTAssertEqual(users[0].id, 999)
+    }
 
     func testCourseContents() async throws {
         let t2Schola = T2Schola()
