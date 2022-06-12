@@ -58,6 +58,10 @@ public struct T2Schola {
         try await apiClient.send(request: NotificationReadRequest(notificationId: notificationId, wsToken: wsToken))
     }
     
+    public func uploadFile(file: Data, fileType: String, mimeType: String, fileName: String, wsToken: String) async throws -> UploadFilesResponse {
+        try await apiClient.send(request: UploadFileRequest(file: file, mimeType: mimeType, fileName: fileName, wsToken: wsToken))
+    }
+    
     public static func changeToMock() {
         changeToMockBaseHost()
     }
