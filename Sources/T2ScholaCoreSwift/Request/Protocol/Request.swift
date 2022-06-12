@@ -33,6 +33,8 @@ public protocol Request {
 
 public struct EmptyRequestBody: Encodable {}
 
+public typealias MultipartFormDatasBody = [MultipartFormDataBody]
+
 public protocol MultipartFormDataBody {
     var data: Data { get }
     var name: String { get }
@@ -59,7 +61,7 @@ extension Request {
 
         if requestBody is Encodable {
             header["Content-Type"] = "application/json"
-        } else if requestBody is MultipartFormDataBody {
+        } else if (requestBody is MultipartFormDataBody || requestBody is MultipartFormDatasBody) {
             header["Content-Type"] = "multipart/form-data; boundary=\(boundary)"
         }
 
@@ -104,6 +106,34 @@ extension Request where RequestBody: MultipartFormDataBody {
         body.append("Content-Type: \(requestBody.mimeType)\r\n\r\n".data(using: .utf8) ?? Data())
         body.append(requestBody.data)
         body.append("\r\n".data(using: .utf8) ?? Data())
+        body.append("--\(boundary)--\r\n".data(using: .utf8) ?? Data())
+
+        return body
+    }
+}
+
+extension Request where RequestBody == MultipartFormDatasBody {
+    public func encode(requestBody: RequestBody) throws -> Data {
+        var body = Data()
+
+        let boundaryText = "--\(boundary)\r\n"
+        
+        for requestOneBody in requestBody {
+            body.append(boundaryText.data(using: .utf8) ?? Data())
+            if (requestOneBody.fileName == "" && requestOneBody.mimeType == "") {
+                body.append(
+                    "Content-Disposition: form-data; name=\"\(requestOneBody.name)\"\r\n\r\n"
+                        .data(using: .utf8) ?? Data())
+            } else {
+                body.append(
+                    "Content-Disposition: form-data; name=\"\(requestOneBody.name)\"; filename=\"\(requestOneBody.fileName)\"\r\n"
+                        .data(using: .utf8) ?? Data())
+                body.append("Content-Type: \(requestOneBody.mimeType)\r\n\r\n".data(using: .utf8) ?? Data())
+            }
+            body.append(requestOneBody.data)
+            body.append("\r\n".data(using: .utf8) ?? Data())
+        }
+
         body.append("--\(boundary)--\r\n".data(using: .utf8) ?? Data())
 
         return body
