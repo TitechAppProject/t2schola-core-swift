@@ -9,13 +9,15 @@ struct UploadFileRequest: UploadAPIRequest {
     
     let method: HTTPMethod = .post
     
-    var requestBody: MultipartFormDatasBody = []
+    let requestBody: MultipartFormDatasBody
     
     init(file: Data, mimeType: String, fileName: String, wsToken: String) {
+        var requestBody: MultipartFormDatasBody = []
         let fileBody = UploadFileRequestBody(data: file, name: "upfile", mimeType: mimeType, fileName: fileName)
         let tokenBody = UploadFileRequestBody(data: (wsToken.data(using: .utf8) ?? "".data(using: .utf8))!, name: "token", mimeType: "", fileName: "")
         requestBody.append(tokenBody)
         requestBody.append(fileBody)
+        self.requestBody = requestBody
     }
 }
 
