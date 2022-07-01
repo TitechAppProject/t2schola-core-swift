@@ -99,7 +99,7 @@ public struct AssignmentSubmission: Codable {
     public let timecreated: Date // Submission creation time.
     public let timemodified: Date // Submission last modified time.
     public let status: AssignmentSubmissionStatus // Submission status.
-    public let groupid: Int // Group id.
+    public let groupid: Int? // Group id.
     public let assignment: Int? // Assignment id.
     public let latest: Int? // Latest attempt.
     public let plugins: [AddonModAssignPlugin]?; // Plugins.
