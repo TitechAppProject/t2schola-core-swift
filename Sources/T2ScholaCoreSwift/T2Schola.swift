@@ -66,6 +66,10 @@ public struct T2Schola {
         try await apiClient.send(request: AddCommentsRequest(instanceId: instanceId, itemId: itemId, comment: comment, wsToken: wsToken))
     }
     
+    public func deleteComments(commentId: Int, wsToken: String) async throws -> DeleteCommentsResponse {
+        try await apiClient.send(request: DeleteCommentsRequest(commentId: commentId, wsToken: wsToken))
+    }
+
     public static func changeToMock() {
         changeToMockBaseHost()
     }
