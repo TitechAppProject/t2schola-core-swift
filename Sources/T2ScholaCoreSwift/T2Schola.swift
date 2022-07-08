@@ -62,6 +62,10 @@ public struct T2Schola {
         try await apiClient.send(request: SubmissionCommentsRequest(instanceId: instanceId, itemId: itemId, wsToken: wsToken))
     }
 
+    public func getQuizzes(wsToken: String) async throws -> QuizzesResponse {
+        try await apiClient.send(request: QuizzesRequest(wsToken: wsToken))
+    }
+    
     public static func changeToMock() {
         changeToMockBaseHost()
     }
