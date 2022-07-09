@@ -102,6 +102,132 @@ final class T2ScholaTests: XCTestCase {
         }
     }
 
+    func testQuizzesRequest() async throws {
+        let t2Schola = T2Schola(
+            apiClient: APIClientMock(
+                mockString:
+"""
+{
+    "quizzes": [
+        {
+            "id": 3,
+            "course": 5,
+            "coursemodule": 15,
+            "name": "小テストです！！！！！！",
+            "intro": "",
+            "introformat": 1,
+            "introfiles": [],
+            "timeopen": 1650544740,
+            "timeclose": 1650548340,
+            "timelimit": 3600,
+            "overduehandling": "autosubmit",
+            "graceperiod": 0,
+            "preferredbehaviour": "deferredfeedback",
+            "canredoquestions": 0,
+            "attempts": 0,
+            "attemptonlast": 0,
+            "grademethod": 1,
+            "decimalpoints": 2,
+            "questiondecimalpoints": -1,
+            "reviewattempt": 69904,
+            "reviewcorrectness": 4368,
+            "reviewmarks": 4368,
+            "reviewspecificfeedback": 4368,
+            "reviewgeneralfeedback": 4368,
+            "reviewrightanswer": 4368,
+            "reviewoverallfeedback": 4368,
+            "questionsperpage": 1,
+            "navmethod": "free",
+            "shuffleanswers": 1,
+            "sumgrades": 0,
+            "grade": 10,
+            "timecreated": 1650544780,
+            "timemodified": 1650544805,
+            "password": "",
+            "subnet": "",
+            "browsersecurity": "-",
+            "delay1": 0,
+            "delay2": 0,
+            "showuserpicture": 0,
+            "showblocks": 0,
+            "completionattemptsexhausted": 0,
+            "completionpass": 0,
+            "allowofflineattempts": 0,
+            "autosaveperiod": 0,
+            "hasfeedback": 0,
+            "hasquestions": 0,
+            "section": 3,
+            "visible": 1,
+            "groupmode": 0,
+            "groupingid": 0
+        },
+        {
+            "id": 2,
+            "course": 4,
+            "coursemodule": 14,
+            "name": "考えてみよう",
+            "intro": "<p dir='ltr' style='text-align: left;'>小テストだよ</p>",
+            "introformat": 1,
+            "introfiles": [],
+            "timeopen": 1650543180,
+            "timeclose": 1682079180,
+            "timelimit": 0,
+            "overduehandling": "autoabandon",
+            "graceperiod": 0,
+            "preferredbehaviour": "deferredfeedback",
+            "canredoquestions": 0,
+            "attempts": 0,
+            "attemptonlast": 0,
+            "grademethod": 1,
+            "decimalpoints": 2,
+            "questiondecimalpoints": -1,
+            "reviewattempt": 69904,
+            "reviewcorrectness": 4368,
+            "reviewmarks": 4368,
+            "reviewspecificfeedback": 4368,
+            "reviewgeneralfeedback": 4368,
+            "reviewrightanswer": 4368,
+            "reviewoverallfeedback": 4368,
+            "questionsperpage": 1,
+            "navmethod": "free",
+            "shuffleanswers": 1,
+            "sumgrades": 0,
+            "grade": 10,
+            "timecreated": 1650543254,
+            "timemodified": 1650543254,
+            "password": "",
+            "subnet": "",
+            "browsersecurity": "-",
+            "delay1": 0,
+            "delay2": 0,
+            "showuserpicture": 0,
+            "showblocks": 0,
+            "completionattemptsexhausted": 0,
+            "completionpass": 0,
+            "allowofflineattempts": 0,
+            "autosaveperiod": 0,
+            "hasfeedback": 0,
+            "hasquestions": 0,
+            "section": 1,
+            "visible": 1,
+            "groupmode": 0,
+            "groupingid": 0
+        }
+    ],
+    "warnings": []
+}
+"""
+            )
+        )
+
+        let response = try await t2Schola.getQuizzes(wsToken: token)
+        
+        XCTAssertEqual(response.quizzes.count, 2)
+        XCTAssertEqual(response.quizzes[0].id, 3)
+        XCTAssertEqual(response.quizzes[0].name, "小テストです！！！！！！")
+        XCTAssertEqual(response.quizzes[0].timecreated, 1650544780)
+    }
+
 //    func testGetNotifications() async throws {
 //        let t2Schola = T2Schola()
 //        if userMockServer { T2Schola.changeToMock() }
@@ -123,3 +249,5 @@ final class T2ScholaTests: XCTestCase {
 //        }
 //    }
 }
+
+
