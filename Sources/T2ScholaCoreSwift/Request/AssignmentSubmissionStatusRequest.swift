@@ -66,17 +66,17 @@ public struct AssignmentSubmissionLastAttempt: Codable {
     public let teamsubmission: AssignmentSubmission? // Submission info.
     public let submissiongroup: Int? // The submission group id (for group submissions only).
     public let submissiongroupmemberswhoneedtosubmit: [Int]?  // users who still need to submit (for group submissions only).
-    public let submissionsenabled: Bool?   // Whether submissions are enabled or not.
-    public let locked: Bool?   // Whether new submissions are locked.
-    public let graded: Bool?   // Whether the submission is graded.
-    public let canedit: Bool?   // Whether the user can edit the current submission.
+    public let submissionsenabled: Bool   // Whether submissions are enabled or not.
+    public let locked: Bool   // Whether new submissions are locked.
+    public let graded: Bool   // Whether the submission is graded.
+    public let canedit: Bool   // Whether the user can edit the current submission.
     public let caneditowner: Bool?   // Whether the owner of the submission can edit it.
-    public let cansubmit: Bool?   // Whether the user can submit.
-    public let extensionduedate: Int?   // Extension due date.
-    public let blindmarking: Bool?   // Whether blind marking is enabled.
-    public let gradingstatus: AssignmentGradingStatus?   // Grading status.
-    public let usergroups: [Int]?   // User groups in the course.
-    public let timelimit: Int?  // @since 4.0. Time limit for submission.
+    public let cansubmit: Bool   // Whether the user can submit.
+    public let extensionduedate: Date   // Extension due date.
+    public let blindmarking: Bool   // Whether blind marking is enabled.
+    public let gradingstatus: AssignmentGradingStatus   // Grading status.
+    public let usergroups: [Int]   // User groups in the course.
+//    public let timelimit: Int?  // @since 4.0. Time limit for submission.
 }
 
 
@@ -118,7 +118,7 @@ public struct AssignmentSubmission: Codable {
     public let latest: Int? // Latest attempt.
     public let plugins: [AddonModAssignPlugin]?; // Plugins.
     public let gradingstatus: String? // @since 3.2. Grading status.
-    public let timestarted: Int? // @since 4.0. Submission start time.
+//    public let timestarted: Int? // @since 4.0. Submission start time.
 }
 
 public struct AddonModAssignPlugin: Codable {
