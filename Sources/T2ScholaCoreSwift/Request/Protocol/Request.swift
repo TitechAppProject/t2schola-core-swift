@@ -72,6 +72,7 @@ extension Request {
 extension Request where Response: Decodable {
     public func decode(data: Data) throws -> Response {
         let decoder = JSONDecoder()
+        print(String(data: data, encoding: .utf8)!)
         decoder.dateDecodingStrategy = .secondsSince1970
         return try decoder.decode(Response.self, from: data)
     }

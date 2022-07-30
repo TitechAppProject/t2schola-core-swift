@@ -7,7 +7,7 @@ struct DeleteCommentsRequest: RestAPIRequest {
     typealias RequestBody = Void
     typealias Response = DeleteCommentsResponse
     
-    let method: HTTPMethod = .get
+    let method: HTTPMethod = .post
     
     let queryParameters: [String: Any]?
     

@@ -7,7 +7,7 @@ struct AddCommentsRequest: RestAPIRequest {
     typealias RequestBody = Void
     typealias Response = AddCommentsResponse
     
-    let method: HTTPMethod = .get
+    let method: HTTPMethod = .post
     
     let queryParameters: [String: Any]?
     
