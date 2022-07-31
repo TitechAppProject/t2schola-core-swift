@@ -266,12 +266,8 @@ final class T2ScholaTests: XCTestCase {
 """#
                 )
         )
-        for course in assignments.courses {
-            for assignment in course.assignments {
-                let status = try await t2ScholaForMockGetAssignmentSubmissionStatus.getAssignmentSubmissionStatus(assignmentId: assignment.id, userId: userId, wsToken: token)
-                print("\(assignment.name) status: \(status.lastattempt?.submission?.status.rawValue ?? "")")
-            }
-        }
+        let status = try await t2ScholaForMockGetAssignmentSubmissionStatus.getAssignmentSubmissionStatus(assignmentId: assignments.courses[0].assignments[0].id, userId: userId, wsToken: token)
+        print("\(assignments.courses[0].assignments[0].name) status: \(status.lastattempt?.submission?.status.rawValue ?? "")")
     }
 
 //    func testGetNotifications() async throws {
