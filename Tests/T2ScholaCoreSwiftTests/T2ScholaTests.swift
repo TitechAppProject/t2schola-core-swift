@@ -90,7 +90,7 @@ final class T2ScholaTests: XCTestCase {
     }
 
     func testAssignments() async throws {
-        let t2Schola = T2Schola(
+        let t2ScholaForMockGetAssignments = T2Schola(
             apiClient: APIClientMock(
                 mockString:
 #"""
@@ -146,8 +146,8 @@ final class T2ScholaTests: XCTestCase {
         )
         if userMockServer { T2Schola.changeToMock() }
 
-        let assignments = try await t2Schola.getAssignments(wsToken: token)
-        let t2Schola_ = T2Schola(
+        let assignments = try await t2ScholaForMockGetAssignments.getAssignments(wsToken: token)
+        let t2ScholaForMockGetAssignmentSubmissionStatus = T2Schola(
             apiClient: APIClientMock(
                 mockString:
 #"""
@@ -268,7 +268,7 @@ final class T2ScholaTests: XCTestCase {
         )
         for course in assignments.courses {
             for assignment in course.assignments {
-                let status = try await t2Schola_.getAssignmentSubmissionStatus(assignmentId: assignment.id, userId: userId, wsToken: token)
+                let status = try await t2ScholaForMockGetAssignmentSubmissionStatus.getAssignmentSubmissionStatus(assignmentId: assignment.id, userId: userId, wsToken: token)
                 print("\(assignment.name) status: \(status.lastattempt?.submission?.status.rawValue ?? "")")
             }
         }
