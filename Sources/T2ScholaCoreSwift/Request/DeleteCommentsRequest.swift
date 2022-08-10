@@ -4,21 +4,29 @@ import FoundationNetworking
 #endif
 
 struct DeleteCommentsRequest: RestAPIRequest {
-    typealias RequestBody = Void
+    typealias RequestBody = DeleteCommentsRequestBody
     typealias Response = DeleteCommentsResponse
     
     let method: HTTPMethod = .post
     
+    var requestBody: RequestBody
     let queryParameters: [String: Any]?
     
     init(commentId: Int, wsToken: String) {
         queryParameters = [
             "moodlewsrestformat" : "json",
+            "wsfunction" : "core_comment_delete_comments"
+        ]
+        let query: [String: Any] = [
             "wstoken" : wsToken,
-            "wsfunction" : "core_comment_delete_comments",
             "comments[0]" : commentId //id of the comment (default: 0)
         ]
+        self.requestBody = DeleteCommentsRequestBody(query: query)
     }
+}
+
+public struct DeleteCommentsRequestBody: UrlEncodedBody {
+    public let query: [String : Any]
 }
 
 public typealias DeleteCommentsResponse = [DeleteCommentsResponseWarning]?

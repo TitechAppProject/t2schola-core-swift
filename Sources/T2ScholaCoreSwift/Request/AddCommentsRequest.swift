@@ -4,15 +4,20 @@ import FoundationNetworking
 #endif
 
 struct AddCommentsRequest: RestAPIRequest {
-    typealias RequestBody = Void
+    typealias RequestBody = AddCommentsRequestBody
     typealias Response = AddCommentsResponse
     
     let method: HTTPMethod = .post
     
+    var requestBody: RequestBody
     let queryParameters: [String: Any]?
     
     init(instanceId: Int, itemId: Int, comment: String, wsToken: String) {
         queryParameters = [
+            "moodlewsrestformat" : "json",
+            "wsfunction" : "core_comment_add_comments",
+        ]
+        let query: [String: Any] = [
             "moodlewsrestformat" : "json",
             "wstoken" : wsToken,
             "wsfunction" : "core_comment_add_comments",
@@ -23,7 +28,12 @@ struct AddCommentsRequest: RestAPIRequest {
             "comments[0][area]" : "submission_comments", //string comment area (default: "")
             "comments[0][content]" : comment //component
         ]
+        self.requestBody = AddCommentsRequestBody(query: query)
     }
+}
+
+public struct AddCommentsRequestBody: UrlEncodedBody {
+    public let query: [String : Any]
 }
 
 public typealias AddCommentsResponse = [AddCommentResponse]
