@@ -32,7 +32,7 @@ struct AddCommentsRequest: RestAPIRequest {
     }
 }
 
-public struct AddCommentsRequestBody: UrlEncodedBody {
+public struct AddCommentsRequestBody: WwwFormUrlEncodedBody {
     public let query: [String : Any]
 }
 

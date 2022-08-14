@@ -25,7 +25,7 @@ struct DeleteCommentsRequest: RestAPIRequest {
     }
 }
 
-public struct DeleteCommentsRequestBody: UrlEncodedBody {
+public struct DeleteCommentsRequestBody: WwwFormUrlEncodedBody {
     public let query: [String : Any]
 }
 

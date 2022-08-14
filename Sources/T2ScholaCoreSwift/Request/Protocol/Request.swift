@@ -40,7 +40,7 @@ public protocol MultipartFormDataBody {
     var fileName: String { get }
 }
 
-public protocol UrlEncodedBody {
+public protocol WwwFormUrlEncodedBody {
     var query: [String: Any] { get }
 }
 
@@ -63,7 +63,7 @@ extension Request {
 
         if requestBody is Encodable {
             header["Content-Type"] = "application/json"
-        } else if requestBody is UrlEncodedBody {
+        } else if requestBody is WwwFormUrlEncodedBody {
             header["Content-Type"] = "application/x-www-form-urlencoded"
         } else if requestBody is MultipartFormDataBody {
             header["Content-Type"] = "multipart/form-data; boundary=\(boundary)"
@@ -78,7 +78,6 @@ extension Request {
 extension Request where Response: Decodable {
     public func decode(data: Data) throws -> Response {
         let decoder = JSONDecoder()
-        print(String(data: data, encoding: .utf8)!)
         decoder.dateDecodingStrategy = .secondsSince1970
         return try decoder.decode(Response.self, from: data)
     }
@@ -98,7 +97,7 @@ extension Request where RequestBody: Encodable {
     }
 }
 
-extension Request where RequestBody: UrlEncodedBody {
+extension Request where RequestBody: WwwFormUrlEncodedBody {
     public func encode(requestBody: RequestBody) throws -> Data {
         var allowedCharacterSet = CharacterSet.urlQueryAllowed
         allowedCharacterSet.remove(charactersIn: "!*'();:@&=+$,/?%#[]")
