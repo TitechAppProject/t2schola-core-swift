@@ -101,6 +101,37 @@ final class T2ScholaTests: XCTestCase {
             }
         }
     }
+    
+    func testAddCommentRequest() async throws {
+        let t2Schola = T2Schola(
+            apiClient: APIClientMock(
+                mockString:
+#"""
+[
+    {
+        "id": 12358,
+        "content": "<div class=\"no-overflow\"><div class=\"text_to_html\">test comment あ !*'();:@&amp;=+$,/?%#[]</div></div>",
+        "format": 0,
+        "timecreated": 1660098833,
+        "strftimeformat": "%Y年 %m月 %d日(%a) %H:%M",
+        "profileurl": "https://t2schola.titech.ac.jp/user/view.php?id=10000&amp;course=20000",
+        "fullname": "Fullname",
+        "time": "2022年 08月 10日(水) 11:33",
+        "avatar": "<a href=\"https://t2schola.titech.ac.jp/user/view.php?id=10000&amp;course=20000\" class=\"d-inline-block aabtn\"><img src=\"https://t2schola.titech.ac.jp/pluginfile.php/34988/user/icon/titech/f2?rev=1147621\" class=\"userpicture\" width=\"16\" height=\"16\" alt=\"test\" title=\"test\" /></a>",
+        "userid": 10000,
+        "delete": true
+    }
+]
+"""#
+                )
+            )
+        let response = try await t2Schola.addComments(instanceId: 80000, itemId: 500000, comment: "test comment あ !*'();:@&=+$,/?%#[]", wsToken: token)
+        XCTAssertEqual(response.count, 1)
+        XCTAssertEqual(response[0].id, 12358)
+        XCTAssertEqual(response[0].format, 0)
+        
+    }
+    
 
     func testQuizzesRequest() async throws {
         let t2Schola = T2Schola(

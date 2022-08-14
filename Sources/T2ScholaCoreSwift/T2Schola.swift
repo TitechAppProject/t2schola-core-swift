@@ -61,6 +61,14 @@ public struct T2Schola {
     public func getSubmissionComments(instanceId: Int, itemId: Int, wsToken: String) async throws -> SubmissionCommentsResponse {
         try await apiClient.send(request: SubmissionCommentsRequest(instanceId: instanceId, itemId: itemId, wsToken: wsToken))
     }
+    
+    public func addComments(instanceId: Int, itemId: Int, comment: String, wsToken: String) async throws -> AddCommentsResponse {
+        try await apiClient.send(request: AddCommentsRequest(instanceId: instanceId, itemId: itemId, comment: comment, wsToken: wsToken))
+    }
+    
+    public func deleteComments(commentId: Int, wsToken: String) async throws -> DeleteCommentsResponse {
+        try await apiClient.send(request: DeleteCommentsRequest(commentId: commentId, wsToken: wsToken))
+    }
 
     public func getQuizzes(wsToken: String) async throws -> QuizzesResponse {
         try await apiClient.send(request: QuizzesRequest(wsToken: wsToken))
