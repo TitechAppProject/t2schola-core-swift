@@ -25,7 +25,7 @@ struct AssignmentSubmissionStatusRequest: RestAPIRequest {
 public struct AssignmentSubmissionStatusResponse: Codable {
     public let gradingsummary: [AssignmentSubmissionGradingSummary]? // Grading information.
     public let lastattempt: AssignmentSubmissionLastAttempt? // Last attempt information.
-    public let feedback: AssignmentSubmissionFeedback?; // Feedback for the last attempt.
+    public let feedback: AssignmentSubmissionFeedback?  // Feedback for the last attempt.
     public let previousattempts: [AssignmentSubmissionPreviousAttempt]? // List all the previous attempts did by the user.
     public let assignmentdata: AssignmentSubmissionStatusData? // @since 4.0. Extra information about assignment.
     public let warnings: [AssignmentSubmissionStatusResponseWarning]?
@@ -63,6 +63,20 @@ public struct AssignmentSubmissionStatusResponseWarning: Codable {
 
 public struct AssignmentSubmissionLastAttempt: Codable {
     public let submission: AssignmentSubmission? // Submission info.
+    public let teamsubmission: AssignmentSubmission? // Submission info.
+    public let submissiongroup: Int? // The submission group id (for group submissions only).
+    public let submissiongroupmemberswhoneedtosubmit: [Int]?  // users who still need to submit (for group submissions only).
+    public let submissionsenabled: Bool   // Whether submissions are enabled or not.
+    public let locked: Bool   // Whether new submissions are locked.
+    public let graded: Bool   // Whether the submission is graded.
+    public let canedit: Bool   // Whether the user can edit the current submission.
+    public let caneditowner: Bool?   // Whether the owner of the submission can edit it.
+    public let cansubmit: Bool   // Whether the user can submit.
+    public let extensionduedate: Date   // Extension due date.
+    public let blindmarking: Bool   // Whether blind marking is enabled.
+    public let gradingstatus: AssignmentGradingStatus   // Grading status.
+    public let usergroups: [Int]   // User groups in the course.
+//    public let timelimit: Int?  // @since 4.0. Time limit for submission.
 }
 
 
@@ -104,7 +118,7 @@ public struct AssignmentSubmission: Codable {
     public let latest: Int? // Latest attempt.
     public let plugins: [AddonModAssignPlugin]?; // Plugins.
     public let gradingstatus: String? // @since 3.2. Grading status.
-    public let timestarted: Int? // @since 4.0. Submission start time.
+//    public let timestarted: Int? // @since 4.0. Submission start time.
 }
 
 public struct AddonModAssignPlugin: Codable {
@@ -133,4 +147,19 @@ public enum AssignmentSubmissionStatus: String, Codable {
     case reopened = "reopened"
     case draft = "draft"
     case submitted = "submitted"
+    // Added by App Statuses.
+    case noattempt = "noattempt"
+    case noonlinesubmissions = "noonlinesubmissions"
+    case nosubmission = "nosubmission"
+    case gradedfollowupsubmit = "gradedfollowupsubmit"
+}
+
+public enum AssignmentGradingStatus: String, Codable {
+    case graded = "graded"
+    case notgraded = "notgraded"
+    // Added by App Statuses.
+    case released = "released" // with ASSIGN_MARKING_WORKFLOW_STATE_RELEASED
+    case gradedfollowupsubmit = "gradedfollowupsubmit"
+    // found exception
+    case notmarked = "notmarked"
 }
