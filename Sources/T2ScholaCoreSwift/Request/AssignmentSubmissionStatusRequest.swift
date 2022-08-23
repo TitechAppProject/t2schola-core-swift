@@ -72,7 +72,7 @@ public struct AssignmentSubmissionLastAttempt: Codable {
     public let canedit: Bool   // Whether the user can edit the current submission.
     public let caneditowner: Bool?   // Whether the owner of the submission can edit it.
     public let cansubmit: Bool   // Whether the user can submit.
-    public let extensionduedate: Date   // Extension due date.
+    public let extensionduedate: Date?   // Extension due date.
     public let blindmarking: Bool   // Whether blind marking is enabled.
     public let gradingstatus: AssignmentGradingStatus   // Grading status.
     public let usergroups: [Int]   // User groups in the course.
