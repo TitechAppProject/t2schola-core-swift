@@ -152,6 +152,16 @@ public enum AssignmentSubmissionStatus: String, Codable {
     case noonlinesubmissions = "noonlinesubmissions"
     case nosubmission = "nosubmission"
     case gradedfollowupsubmit = "gradedfollowupsubmit"
+    case unknown = "unknown"
+
+    public init(from decoder: Decoder) throws {
+        let rawValue = try decoder.singleValueContainer().decode(String.self)
+        guard let status = AssignmentSubmissionStatus(rawValue: rawValue) else {
+            self = .unknown
+            return
+        }
+        self = status
+    }
 }
 
 public enum AssignmentGradingStatus: String, Codable {
@@ -162,4 +172,15 @@ public enum AssignmentGradingStatus: String, Codable {
     case gradedfollowupsubmit = "gradedfollowupsubmit"
     // found exception
     case notmarked = "notmarked"
+    case inmarking = "inmarking"
+    case unknown = "unknown"
+
+    public init(from decoder: Decoder) throws {
+        let rawValue = try decoder.singleValueContainer().decode(String.self)
+        guard let status = AssignmentGradingStatus(rawValue: rawValue) else {
+            self = .unknown
+            return
+        }
+        self = status
+    }
 }
