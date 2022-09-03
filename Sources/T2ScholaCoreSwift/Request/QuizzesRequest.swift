@@ -33,11 +33,11 @@ public struct QuizResponse: Codable {
     public let intro: String? //  Quiz introduction text.
     public let introformat: Int? //  intro format (1 = HTML, 0 = MOODLE, 2 = PLAIN or 4 = MARKDOWN)
 //  public let introfiles: [File] //  Files in the introduction text
-    public let timeopen: Int? //  The time when this quiz opens. (0 = no restriction.)
-    public let timeclose: Int? //  The time when this quiz closes. (0 = no restriction.)
-    public let timelimit: Int? //  The time limit for quiz attempts, in seconds.
+    public let timeopen: Date? //  The time when this quiz opens. (0 = no restriction.)
+    public let timeclose: Date? //  The time when this quiz closes. (0 = no restriction.)
+    public let timelimit: Date? //  The time limit for quiz attempts, in seconds.
     public let overduehandling: String? //  The method used to handle overdue attempts. 'autosubmit', 'graceperiod' or 'autoabandon'.
-    public let graceperiod: Int? //  The amount of time (in seconds) after the time limit runs out during which attempts can still be submitted, if overduehandling is set to allow it.
+    public let graceperiod: Date? //  The amount of time (in seconds) after the time limit runs out during which attempts can still be submitted, if overduehandling is set to allow it.
     public let preferredbehaviour: String? //  The behaviour to ask questions to use.
     public let canredoquestions: Int? //  Allows students to redo any completed questionwithin a quiz attempt.
     public let attempts: Int? //  The maximum number of attempts a student is allowed.
@@ -57,8 +57,8 @@ public struct QuizResponse: Codable {
     public let shuffleanswers: Int? //  Whether the parts of the question should be shuffled, in those question types that support it.
     public let sumgrades: Double //  The total of all the question instance maxmarks.
     public let grade: Double //  The total that the quiz overall grade is scaled to beout of.
-    public let timecreated: Int? //  The time when the quiz was added to the course.
-    public let timemodified: Int? //  Last modified time.
+    public let timecreated: Date? //  The time when the quiz was added to the course.
+    public let timemodified: Date? //  Last modified time.
     public let password: String? //  A password that the student must enter before starting or continuing a quiz attempt.
     public let subnet: String? //  Used to restrict the IP addresses from which this quiz canbe attempted. The format is as requried by the address_in_subnetfunction.
     public let browsersecurity: String? //  Restriciton on the browser the student must use. E.g. 'securewindow'.
