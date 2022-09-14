@@ -58,7 +58,7 @@ public struct T2Schola {
         try await apiClient.send(request: NotificationReadRequest(notificationId: notificationId, wsToken: wsToken))
     }
     
-    public func getSubmissionComments(instanceId: Int, itemId: Int, wsToken: String) async throws -> AssignmentSubmissionCommentsResponse {
+    public func getAssignmentSubmissionComments(instanceId: Int, itemId: Int, wsToken: String) async throws -> AssignmentSubmissionCommentsResponse {
         try await apiClient.send(request: AssignmentSubmissionCommentsRequest(instanceId: instanceId, itemId: itemId, wsToken: wsToken))
     }
     
