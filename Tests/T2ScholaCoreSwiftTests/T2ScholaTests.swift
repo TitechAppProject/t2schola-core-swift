@@ -224,10 +224,10 @@ final class T2ScholaTests: XCTestCase {
 
         do {
             let response = try await t2Schola.getQuizzes(wsToken: token)
-            XCTAssertEqual(response.quizzes.count, 2)
-            XCTAssertEqual(response.quizzes[0].id, 3)
-            XCTAssertEqual(response.quizzes[0].name, "小テストです！！！！！！")
-            XCTAssertEqual(response.quizzes[0].timecreated, 1650544780)
+            XCTAssertEqual(response.quizzes.count, 4)
+            XCTAssertEqual(response.quizzes[0].id, 358)
+            XCTAssertEqual(response.quizzes[0].name, "小テストの機能の練習")
+            XCTAssertEqual(response.quizzes[0].timeclose, Date(timeIntervalSince1970: TimeInterval(integerLiteral: 1633445940)))
         } catch {
             print(error._domain)
             print(error._code)
