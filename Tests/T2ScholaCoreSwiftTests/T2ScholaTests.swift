@@ -227,7 +227,7 @@ final class T2ScholaTests: XCTestCase {
             XCTAssertEqual(response.quizzes.count, 4)
             XCTAssertEqual(response.quizzes[0].id, 358)
             XCTAssertEqual(response.quizzes[0].name, "小テストの機能の練習")
-            XCTAssertEqual(response.quizzes[0].timeclose, Date(timeIntervalSince1970: TimeInterval(integerLiteral: 1633445940)))
+            XCTAssertEqual(response.quizzes[0].timeclose, Date(timeIntervalSince1970: 1633445940))
         } catch {
             print(error._domain)
             print(error._code)
