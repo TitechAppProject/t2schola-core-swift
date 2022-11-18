@@ -35,6 +35,7 @@ public struct CourseContentModule: Codable {
     public let modname: CourseContentModuleName
     public let url: URL?
     public let name: String
+    public let instance: Int
     public let description: String?
     public let modicon: URL
     public let modplural: String
