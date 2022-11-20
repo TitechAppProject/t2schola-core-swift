@@ -94,7 +94,7 @@ public struct AssignmentSubmissionGrade: Codable {
     public let attemptnumber: Int // Attempt number.
     public let timecreated: Date // Grade creation time.
     public let timemodified: Date // Grade last modified time.
-    public let grader: Int // Grader, -1 if grader is hidden.
+    public let grader: Int? // Grader, -1 if grader is hidden. (Moodle Mobileのコーデではnon-nullだがnullが帰ってくるため
     public let grade: String? // Grade.
     public let gradefordisplay: String?; // Grade rendered into a format suitable for display.
 }
