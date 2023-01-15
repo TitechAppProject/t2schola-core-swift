@@ -547,7 +547,158 @@ final class T2ScholaTests: XCTestCase {
             print(error._domain)
             print(error._code)
             print(error)
-        }}
+        }
+    }
+    
+    func testForumWithCourseId() async throws {
+        let t2Schola = T2Schola(
+            apiClient: APIClientMock(
+                mockString:
+#"""
+[
+  {
+    "id": 22883,
+    "course": 21754,
+    "type": "news",
+    "name": "アナウンスメント",
+    "intro": "一般ニュースおよびアナウンスメント",
+    "introformat": 1,
+    "introfiles": [],
+    "duedate": 0,
+    "cutoffdate": 0,
+    "assessed": 0,
+    "assesstimestart": 0,
+    "assesstimefinish": 0,
+    "scale": 0,
+    "grade_forum": 0,
+    "grade_forum_notify": 0,
+    "maxbytes": 0,
+    "maxattachments": 1,
+    "forcesubscribe": 1,
+    "trackingtype": 1,
+    "rsstype": 0,
+    "rssarticles": 0,
+    "timemodified": 1646078016,
+    "warnafter": 0,
+    "blockafter": 0,
+    "blockperiod": 0,
+    "completiondiscussions": 0,
+    "completionreplies": 0,
+    "completionposts": 0,
+    "cmid": 62599,
+    "numdiscussions": 9,
+    "cancreatediscussions": false,
+    "lockdiscussionafter": 0,
+    "istracked": false
+  }
+]
+"""#
+            )
+        )
+        do {
+            let response = try await t2Schola.getForumByCourse(wsToken: token, courseId: 21754)
+            XCTAssertEqual(response.count, 1)
+            XCTAssertEqual(response[0].id, 22883)
+            XCTAssertEqual(response[0].course, 21754)
+        } catch {
+            print(error._domain)
+            print(error._code)
+            print(error)
+        }
+    }
+    
+    func testForumWithoutCourseId() async throws {
+        let t2Schola = T2Schola(
+            apiClient: APIClientMock(
+                mockString:
+#"""
+[
+  {
+    "id": 22883,
+    "course": 21754,
+    "type": "news",
+    "name": "アナウンスメント",
+    "intro": "一般ニュースおよびアナウンスメント",
+    "introformat": 1,
+    "introfiles": [],
+    "duedate": 0,
+    "cutoffdate": 0,
+    "assessed": 0,
+    "assesstimestart": 0,
+    "assesstimefinish": 0,
+    "scale": 0,
+    "grade_forum": 0,
+    "grade_forum_notify": 0,
+    "maxbytes": 0,
+    "maxattachments": 1,
+    "forcesubscribe": 1,
+    "trackingtype": 1,
+    "rsstype": 0,
+    "rssarticles": 0,
+    "timemodified": 1646078016,
+    "warnafter": 0,
+    "blockafter": 0,
+    "blockperiod": 0,
+    "completiondiscussions": 0,
+    "completionreplies": 0,
+    "completionposts": 0,
+    "cmid": 62599,
+    "numdiscussions": 9,
+    "cancreatediscussions": false,
+    "lockdiscussionafter": 0,
+    "istracked": false
+  },
+  {
+    "id": 15007,
+    "course": 14742,
+    "type": "news",
+    "name": "化学反応動力学(C)の講義について",
+    "intro": "化学反応動力学(C)を受講する皆さん\r\n<br>\r\n<br>2Qの化学反応動力学(C)の前半を担当する材料系無機材料フォーカスの松下伸広です。講義は6/11(金)より毎週の火金5-6限での開講です。 \r\n\r\n<br>コロナ禍によって皆さん方は一年次に来校して講義を受ける機会が殆どなかったことから、二年次は対面講義を増やして欲しいという希望が多いことや、とは言いながら感染を心配する方もいること等を考慮して、講義のあり方について、後半担当する生駒先生と無機材料フォーカス教育委員の保科先生と相談しました。この結果、以下の様にハイブリッド形式で行うことに致しました。\r\n \r\n\r\n<br>\r\n<br>化学反応動力学(C)　2Q 火金5-6限\r\n<br>担当教員：松下伸広(前半)、生駒俊之(後半)\r\n<br>講義室：教員は南7号館201講義室で講義を行う。早く講義に来た人から南7号館201講義室に一席おきに座ることにして、もし201講義室が一杯になった場合に、すぐ隣の202講義室にて一席おきに着席することにする。同講義の前半の内容は下記Zoomでも配信も行う。(後半については講義開始前に生駒先生より連絡があると思います。)\r\n \r\n\r\n<br>\r\n<br>トピック: 化学反応動力学(前半)_松下伸広 の Zoom ミーティング\r\n<br>時間: 2Q火金 5-6限\r\n<br>講義室：南7号館201(および202)講義室　下記Zoom URLでも聴講可能　\r\n<br>Zoomミーティングに参加する\r\n<br><a href=\"https://us06web.zoom.us/j/**************?pwd=***************************\">https://us06web.zoom.us/j/****************?pwd=*******************************************</a> \r\n\r\n<br>ミーティングID: 978 6222 7450\r\n<br>パスコード: *********************ナウンスメント",
+    "introformat": 1,
+    "introfiles": [],
+    "duedate": 0,
+    "cutoffdate": 0,
+    "assessed": 0,
+    "assesstimestart": 0,
+    "assesstimefinish": 0,
+    "scale": 0,
+    "grade_forum": 0,
+    "grade_forum_notify": 0,
+    "maxbytes": 0,
+    "maxattachments": 1,
+    "forcesubscribe": 1,
+    "trackingtype": 1,
+    "rsstype": 0,
+    "rssarticles": 0,
+    "timemodified": 1623218039,
+    "warnafter": 0,
+    "blockafter": 0,
+    "blockperiod": 0,
+    "completiondiscussions": 0,
+    "completionreplies": 0,
+    "completionposts": 0,
+    "cmid": 21408,
+    "numdiscussions": 0,
+    "cancreatediscussions": false,
+    "lockdiscussionafter": 0,
+    "istracked": false
+  }
+]
+"""#
+            )
+        )
+
+        do {
+            let response = try await t2Schola.getForumByCourse(wsToken: token, courseId: nil)
+            XCTAssertEqual(response.count, 2)
+            XCTAssertEqual(response[0].id, 22883)
+            XCTAssertEqual(response[1].id, 15007)
+        } catch {
+            print(error._domain)
+            print(error._code)
+            print(error)
+        }
+    }
 
 //    func testGetNotifications() async throws {
 //        let t2Schola = T2Schola()
