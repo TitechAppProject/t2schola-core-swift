@@ -74,6 +74,10 @@ public struct T2Schola {
         try await apiClient.send(request: QuizzesRequest(wsToken: wsToken))
     }
     
+    public func getForumDiscussions(wsToken: String, forumId: Int) async throws -> ForumDiscussionsResponse {
+        try await apiClient.send(request: ForumDiscussionsRequest(wsToken: wsToken, forumId: forumId))
+    }
+    
     public static func changeToMock() {
         changeToMockBaseHost()
     }
