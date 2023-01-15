@@ -30,15 +30,15 @@ public struct ForumDiscussionResponse: Codable, Identifiable {
     public let name: String // Discussion name.
     public let groupid: Int // Group id.
     public let groupname: String? // Group name (not returned by WS).
-    public let timemodified: Int // Time modified.
+    public let timemodified: Date // Time modified.
     public let usermodified: Int // The id of the user who last modified.
-    public let timestart: Int // Time discussion can start.
-    public let timeend: Int // Time discussion ends.
+    public let timestart: Date // Time discussion can start.
+    public let timeend: Date // Time discussion ends.
     public let discussion: Int // Discussion id.
     public let parent: Int // Parent id.
     public let userid: Int // User who started the discussion id.
-    public let created: Int // Creation time.
-    public let modified: Int // Time modified.
+    public let created: Date // Creation time.
+    public let modified: Date // Time modified.
     public let mailed: Int // Mailed?.
     public let subject: String // The post subject.
     public let message: String // The post message.
