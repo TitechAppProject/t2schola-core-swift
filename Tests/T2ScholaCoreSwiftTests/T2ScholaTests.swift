@@ -433,6 +433,121 @@ final class T2ScholaTests: XCTestCase {
             print(error)
         }
     }
+    
+    func testForumDiscussions() async throws {
+        let t2Schola = T2Schola(
+            apiClient: APIClientMock(
+                mockString:
+#"""
+{
+  "discussions": [
+    {
+      "id": 24873,
+      "name": "研究室体験　割り当てリスト添付します",
+      "groupid": -1,
+      "timemodified": 1653898688,
+      "usermodified": 12879,
+      "timestart": 0,
+      "timeend": 0,
+      "discussion": 20965,
+      "parent": 0,
+      "userid": 12879,
+      "created": 1653898688,
+      "modified": 1653898714,
+      "mailed": 1,
+      "subject": "研究室体験　割り当てリスト添付します",
+      "message": "<p dir=\"ltr\" style=\"text-align:left;\">受講生各位、</p><p dir=\"ltr\" style=\"text-align:left;\"><br /></p><p dir=\"ltr\" style=\"text-align:left;\">お待たせしました、研究室「体験」割り当てリストを添付します。</p><p dir=\"ltr\" style=\"text-align:left;\">\r\n\r\n</p><p>なお本リストは「体験」であり「配属」とはリンクしません。<br /></p><p>（実際は1研究室1人しか早期配属できなかったりしますし）</p><p><br /></p><p>以降、担当の先生からみんなあてに連絡が来るかと思いますが、担当の先生への個別連絡も可能と思われます。</p><p></p><p><span lang=\"en-us\" xml:lang=\"en-us\">なお体験は、6</span>月<span lang=\"en-us\" xml:lang=\"en-us\">15</span>日までに合計<span lang=\"en-us\" xml:lang=\"en-us\">8</span>時間程度（<span lang=\"en-us\" xml:lang=\"en-us\">2</span>回相当）、担当の先生方と個別相談の上、実施となります。</p><p><br /></p>よろしくお願いします。",
+      "messageformat": 1,
+      "messagetrust": 0,
+      "messageinlinefiles": [
+        {
+          "filename": "体験研究室名簿.pdf",
+          "filepath": "/",
+          "filesize": 72508,
+          "fileurl": "https://t2schola.titech.ac.jp/webservice/pluginfile.php/170965/mod_forum/post/24873/%E4%BD%93%E9%A8%93%E7%A0%94%E7%A9%B6%E5%AE%A4%E5%90%8D%E7%B0%BF.pdf",
+          "timemodified": 1653898688,
+          "mimetype": "application/pdf",
+          "isexternalfile": false
+        }
+      ],
+      "attachment": true,
+      "attachments": [
+        {
+          "filename": "体験研究室名簿.pdf",
+          "filepath": "/",
+          "filesize": 72508,
+          "fileurl": "https://t2schola.titech.ac.jp/webservice/pluginfile.php/170965/mod_forum/attachment/24873/%E4%BD%93%E9%A8%93%E7%A0%94%E7%A9%B6%E5%AE%A4%E5%90%8D%E7%B0%BF.pdf",
+          "timemodified": 1653898714,
+          "mimetype": "application/pdf",
+          "isexternalfile": false
+        }
+      ],
+      "totalscore": 0,
+      "mailnow": 0,
+      "userfullname": "松下 祥子 sachiko matsushita",
+      "usermodifiedfullname": "松下 祥子 sachiko matsushita",
+      "userpictureurl": "https://t2schola.titech.ac.jp/theme/image.php/titech/core/1663309711/u/f2",
+      "usermodifiedpictureurl": "https://t2schola.titech.ac.jp/theme/image.php/titech/core/1663309711/u/f2",
+      "numreplies": 0,
+      "numunread": 0,
+      "pinned": false,
+      "locked": false,
+      "starred": false,
+      "canreply": false,
+      "canlock": false,
+      "canfavourite": true
+    },
+    {
+      "id": 24674,
+      "name": "[5/30まで]早期配属希望の有無連絡ください",
+      "groupid": -1,
+      "timemodified": 1653698744,
+      "usermodified": 12879,
+      "timestart": 0,
+      "timeend": 0,
+      "discussion": 20775,
+      "parent": 0,
+      "userid": 12879,
+      "created": 1653698744,
+      "modified": 1653698744,
+      "mailed": 1,
+      "subject": "[5/30まで]早期配属希望の有無連絡ください",
+      "message": "<p dir=\"ltr\" style=\"text-align:left;\">受講生各位、</p><p dir=\"ltr\" style=\"text-align:left;\"><br /></p><p dir=\"ltr\" style=\"text-align:left;\">研究プロジェクト体験の希望調査ご協力ありがとうございます。</p><p dir=\"ltr\" style=\"text-align:left;\">第1希望があふれてしまった研究室があり、早期配属希望の有無を調査する必要があります。</p><p dir=\"ltr\" style=\"text-align:left;\">後手に回って本当にすみません。</p><p dir=\"ltr\" style=\"text-align:left;\"><br /></p><p dir=\"ltr\" style=\"text-align:left;\">どうか早期配属を希望する学生さんは「5/30まで」に</p><p dir=\"ltr\" style=\"text-align:left;\">matsushita.s.ab@m.titech.ac.jp</p><p dir=\"ltr\" style=\"text-align:left;\">に連絡ください。</p><p dir=\"ltr\" style=\"text-align:left;\"><br /></p><p dir=\"ltr\" style=\"text-align:left;\">参考：早期配属資格</p><p><span style=\"font-size:.9375rem;\"></span></p><p>3年第1Q配属：　２年終了時成績　GPT 3.0 以上、総取得単位 90 以上</p><p><span style=\"font-size:.9375rem;\">3年第3Q配属：　 ３年第2Qまでの成績　GPT 3.5 以上、総取得単位 110 以上</span></p><br /><p></p><p dir=\"ltr\" style=\"text-align:left;\">よろしくお願いいたします。</p><p dir=\"ltr\" style=\"text-align:left;\"><br /></p><p dir=\"ltr\" style=\"text-align:left;\"><br /></p><p dir=\"ltr\" style=\"text-align:left;\">松下祥子</p>",
+      "messageformat": 1,
+      "messagetrust": 0,
+      "attachment": false,
+      "totalscore": 0,
+      "mailnow": 0,
+      "userfullname": "松下 祥子 sachiko matsushita",
+      "usermodifiedfullname": "松下 祥子 sachiko matsushita",
+      "userpictureurl": "https://t2schola.titech.ac.jp/theme/image.php/titech/core/1663309711/u/f2",
+      "usermodifiedpictureurl": "https://t2schola.titech.ac.jp/theme/image.php/titech/core/1663309711/u/f2",
+      "numreplies": 0,
+      "numunread": 0,
+      "pinned": false,
+      "locked": false,
+      "starred": false,
+      "canreply": false,
+      "canlock": false,
+      "canfavourite": true
+    }
+  ]
+}
+"""#
+            )
+        )
+
+        do {
+            let response = try await t2Schola.getForumDiscussions(wsToken: token, forumId: 22883)
+            XCTAssertEqual(response.discussions.count, 2)
+            XCTAssertEqual(response.discussions[0].messageinlinefiles![0].filename, "体験研究室名簿.pdf")
+            XCTAssertEqual(response.discussions[0].attachments![0].filename, "体験研究室名簿.pdf")
+            XCTAssertEqual(response.discussions[1].usermodified, response.discussions[1].userid)
+        } catch {
+            print(error._domain)
+            print(error._code)
+            print(error)
+        }}
 
 //    func testGetNotifications() async throws {
 //        let t2Schola = T2Schola()
