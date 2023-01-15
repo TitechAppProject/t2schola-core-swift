@@ -11,13 +11,13 @@ struct ForumsRequest: RestAPIRequest {
     
     let queryParameters: [String: Any]?
     
-    init(wsToken: String, courseId: Int?) {  //
-        if courseId != nil {
+    init(wsToken: String, courseId: Int?) {
+        if let courseId = courseId {
             queryParameters = [
                 "moodlewsrestformat" : "json",
                 "wstoken" : wsToken,
                 "wsfunction" : "mod_forum_get_forums_by_courses",
-                "courseids[0]" : courseId!  // supports only one id
+                "courseids[0]" : courseId  // supports only one id
             ]
         } else {
             queryParameters = [
