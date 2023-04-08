@@ -1,11 +1,12 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by nanashiki on 2020/12/13.
 //
 
 import Foundation
+
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
@@ -21,7 +22,7 @@ public protocol Request {
     var path: String { get }
 
     var queryParameters: [String: Any]? { get }
-    
+
     var headerFields: [String: String]? { get }
 
     var requestBody: RequestBody { get }
@@ -58,7 +59,7 @@ extension Request {
     public var headerFields: [String: String]? {
         var header: [String: String] = [
             "Host": baseHost,
-            "User-Agent": "Mozilla/5.0 (iPad; CPU OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MoodleMobile t2schola"
+            "User-Agent": "Mozilla/5.0 (iPad; CPU OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MoodleMobile t2schola",
         ]
 
         if requestBody is Encodable {
@@ -137,11 +138,11 @@ extension Request where RequestBody == Void {
 extension Request {
     func generate() -> URLRequest {
         var request = URLRequest(url: encoded(for: baseURL.appendingPathComponent(path)))
-        
+
         request.httpMethod = method.rawValue
         request.allHTTPHeaderFields = headerFields
         request.httpShouldHandleCookies = true
-        
+
         if method != .get && !(requestBody is EmptyRequestBody) {
             request.httpBody = try? encode(requestBody: requestBody)
         }

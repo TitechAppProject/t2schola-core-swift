@@ -1,4 +1,5 @@
 import Foundation
+
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
@@ -6,16 +7,16 @@ import FoundationNetworking
 struct CourseCategoriesRequest: RestAPIRequest {
     typealias RequestBody = Void
     typealias Response = CourseCategoriesResponse
-    
+
     let method: HTTPMethod = .get
-    
+
     let queryParameters: [String: Any]?
-    
+
     init(wsToken: String) {
         queryParameters = [
-            "moodlewsrestformat" : "json",
-            "wstoken" : wsToken,
-            "wsfunction" : "core_course_get_categories"
+            "moodlewsrestformat": "json",
+            "wstoken": wsToken,
+            "wsfunction": "core_course_get_categories",
         ]
     }
 }

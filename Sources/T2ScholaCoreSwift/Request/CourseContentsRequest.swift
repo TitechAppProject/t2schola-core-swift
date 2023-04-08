@@ -1,4 +1,5 @@
 import Foundation
+
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
@@ -6,17 +7,17 @@ import FoundationNetworking
 struct CourseContentsRequest: RestAPIRequest {
     typealias RequestBody = Void
     typealias Response = CourseContentsResponse
-    
+
     let method: HTTPMethod = .get
-    
+
     let queryParameters: [String: Any]?
-    
+
     init(courseid: Int, wsToken: String) {
         queryParameters = [
-            "moodlewsrestformat" : "json",
-            "wstoken" : wsToken,
-            "courseid" : courseid,
-            "wsfunction" : "core_course_get_contents"
+            "moodlewsrestformat": "json",
+            "wstoken": wsToken,
+            "courseid": courseid,
+            "wsfunction": "core_course_get_contents",
         ]
     }
 }
@@ -61,9 +62,9 @@ public enum CourseContentModuleName: String, Codable {
     case folder
     case ttws
     case turnitintooltwo
-    
+
     case unknown
-    
+
     public init(from decoder: Decoder) throws {
         let rawValue = try decoder.singleValueContainer().decode(String.self)
         guard let value = CourseContentModuleName(rawValue: rawValue) else {
@@ -93,9 +94,9 @@ public struct CourseContentModuleContent: Codable {
 public enum CourseContentModuleContentType: String, Codable {
     case file
     case url
-    
+
     case unknown
-    
+
     public init(from decoder: Decoder) throws {
         let rawValue = try decoder.singleValueContainer().decode(String.self)
         guard let value = CourseContentModuleContentType(rawValue: rawValue) else {
