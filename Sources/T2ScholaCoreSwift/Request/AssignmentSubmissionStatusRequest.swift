@@ -24,7 +24,7 @@ struct AssignmentSubmissionStatusRequest: RestAPIRequest {
 }
 
 public struct AssignmentSubmissionStatusResponse: Codable {
-    //    public let gradingsummary: [AssignmentSubmissionGradingSummary]?  // Grading information.
+    public let gradingsummary: AssignmentSubmissionGradingSummary?  // Grading information.
     public let lastattempt: AssignmentSubmissionLastAttempt?  // Last attempt information.
     public let feedback: AssignmentSubmissionFeedback?  // Feedback for the last attempt.
     public let previousattempts: [AssignmentSubmissionPreviousAttempt]?  // List all the previous attempts did by the user.
@@ -32,14 +32,14 @@ public struct AssignmentSubmissionStatusResponse: Codable {
     public let warnings: [AssignmentSubmissionStatusResponseWarning]?
 }
 
-//public struct AssignmentSubmissionGradingSummary: Codable {
-//    public let participantcount: Int  // Number of users who can submit.
-//    public let submissiondraftscount: Int  // Number of submissions in draft status.
-//    public let submissionsenabled: Bool  // Whether submissions are enabled or not.
-//    public let submissionssubmittedcount: Int  // Number of submissions in submitted status.
-//    public let submissionsneedgradingcount: Int  // Number of submissions that need grading.
-//    // warnofungroupedusers: string | boolean; // Whether we need to warn people about groups.
-//}
+public struct AssignmentSubmissionGradingSummary: Codable {
+    public let participantcount: Int  // Number of users who can submit.
+    public let submissiondraftscount: Int  // Number of submissions in draft status.
+    public let submissionsenabled: Bool  // Whether submissions are enabled or not.
+    public let submissionssubmittedcount: Int  // Number of submissions in submitted status.
+    public let submissionsneedgradingcount: Int  // Number of submissions that need grading.
+    // warnofungroupedusers: string | boolean; // Whether we need to warn people about groups.
+}
 
 //public struct AssignmentSubmissionStatusData: Codable {
 //    public let attachments: AssignmentSubmissionStatusDataAttachments? // Intro and activity attachments.
