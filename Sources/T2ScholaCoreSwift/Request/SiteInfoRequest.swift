@@ -1,4 +1,5 @@
 import Foundation
+
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
@@ -6,16 +7,16 @@ import FoundationNetworking
 struct SiteInfoRequest: RestAPIRequest {
     typealias RequestBody = Void
     typealias Response = SiteInfoResponse
-    
+
     let method: HTTPMethod = .get
-    
+
     let queryParameters: [String: Any]?
-    
+
     init(wsToken: String) {
         queryParameters = [
-            "moodlewsrestformat" : "json",
-            "wstoken" : wsToken,
-            "wsfunction" : "core_webservice_get_site_info"
+            "moodlewsrestformat": "json",
+            "wstoken": wsToken,
+            "wsfunction": "core_webservice_get_site_info",
         ]
     }
 }
