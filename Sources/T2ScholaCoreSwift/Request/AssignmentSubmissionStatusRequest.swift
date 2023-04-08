@@ -27,7 +27,7 @@ public struct AssignmentSubmissionStatusResponse: Codable {
     public let lastattempt: AssignmentSubmissionLastAttempt? // Last attempt information.
     public let feedback: AssignmentSubmissionFeedback?  // Feedback for the last attempt.
     public let previousattempts: [AssignmentSubmissionPreviousAttempt]? // List all the previous attempts did by the user.
-    public let assignmentdata: AssignmentSubmissionStatusData? // @since 4.0. Extra information about assignment.
+    // public let assignmentdata: AssignmentSubmissionStatusData? // @since 4.0. Extra information about assignment.
     public let warnings: [AssignmentSubmissionStatusResponseWarning]?
 }
 
@@ -40,16 +40,16 @@ public struct AssignmentSubmissionGradingSummary: Codable {
     // warnofungroupedusers: string | boolean; // Whether we need to warn people about groups.
 }
 
-public struct AssignmentSubmissionStatusData: Codable {
-    public let attachments: AssignmentSubmissionStatusDataAttachments? // Intro and activity attachments.
-    public let activity: String? // Text of activity.
-    public let activityformat: Int? // Format of activity.
-}
+//public struct AssignmentSubmissionStatusData: Codable {
+//    public let attachments: AssignmentSubmissionStatusDataAttachments? // Intro and activity attachments.
+//    public let activity: String? // Text of activity.
+//    public let activityformat: Int? // Format of activity.
+//}
 
-public struct AssignmentSubmissionStatusDataAttachments: Codable {
-    public let intro: [CoreWSExternalFile]? // Intro attachments files.
-    public let activity: [CoreWSExternalFile]? // Activity attachments files.
-}
+//public struct AssignmentSubmissionStatusDataAttachments: Codable {
+//    public let intro: [CoreWSExternalFile]? // Intro attachments files.
+//    public let activity: [CoreWSExternalFile]? // Activity attachments files.
+//}
 
 public struct AssignmentSubmissionStatusResponseWarning: Codable {
     public let item: String?
