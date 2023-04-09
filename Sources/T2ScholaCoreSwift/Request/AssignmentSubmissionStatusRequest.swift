@@ -28,6 +28,9 @@ public struct AssignmentSubmissionStatusResponse: Codable {
     public let lastattempt: AssignmentSubmissionLastAttempt?  // Last attempt information.
     public let feedback: AssignmentSubmissionFeedback?  // Feedback for the last attempt.
     public let previousattempts: [AssignmentSubmissionPreviousAttempt]?  // List all the previous attempts did by the user.
+    /// assignmentdataはなぜか"assignmentdata":[]が帰ってくることがある。。。
+    /// ここで空でも代入していることが問題と思われる
+    /// https://github.com/moodle/moodle/blob/bd2de8edf6a9350cbcaa1a78d9ff06289bb7c6cc/mod/assign/externallib.php#L2531
     // public let assignmentdata: AssignmentSubmissionStatusData? // @since 4.0. Extra information about assignment.
     public let warnings: [AssignmentSubmissionStatusResponseWarning]?
 }
