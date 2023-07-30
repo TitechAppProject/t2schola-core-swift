@@ -7,7 +7,7 @@ import FoundationNetworking
 
 public enum T2ScholaLoginError: Error {
     case parseHtml
-    case parseUrlScheme
+    case parseUrlScheme(responseHTML: String)
     case parseToken
 }
 
@@ -44,7 +44,7 @@ struct LoginRequest: T2ScholaRequest {
             let decodedData = Data(base64Encoded: href.replacingOccurrences(of: "mmt2schola://token=", with: "")),
             let decodedStr = String(data: decodedData, encoding: .utf8)
         else {
-            throw T2ScholaLoginError.parseUrlScheme
+            throw T2ScholaLoginError.parseUrlScheme(responseHTML: doc.body?.text ?? "")
         }
 
         let splitedToken = decodedStr.components(separatedBy: ":::")
