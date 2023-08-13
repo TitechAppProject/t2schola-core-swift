@@ -8,7 +8,7 @@ import FoundationNetworking
 public enum T2ScholaLoginError: Error {
     case parseHtml
     case parseUrlScheme(responseHTML: String)
-    case parseToken
+    case parseToken(responseHTML: String)
 }
 
 struct LoginRequest: T2ScholaRequest {
@@ -44,7 +44,7 @@ struct LoginRequest: T2ScholaRequest {
             let decodedData = Data(base64Encoded: href.replacingOccurrences(of: "mmt2schola://token=", with: "")),
             let decodedStr = String(data: decodedData, encoding: .utf8)
         else {
-            throw T2ScholaLoginError.parseUrlScheme(responseHTML: doc.body?.text ?? "")
+            throw T2ScholaLoginError.parseUrlScheme(responseHTML: doc.toHTML ?? "")
         }
 
         let splitedToken = decodedStr.components(separatedBy: ":::")
@@ -52,7 +52,7 @@ struct LoginRequest: T2ScholaRequest {
         if splitedToken.count > 2 {
             return LoginResponse(wsToken: splitedToken[1])
         } else {
-            throw T2ScholaLoginError.parseToken
+            throw T2ScholaLoginError.parseToken(responseHTML: doc.toHTML ?? "")
         }
     }
 
