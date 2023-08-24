@@ -435,6 +435,78 @@ final class T2ScholaTests: XCTestCase {
         }
     }
 
+    func testWorkshopsRequest() async throws {
+        let t2Schola = T2Schola(
+            apiClient: APIClientMock(
+                mockString:
+                    #"""
+                    {
+                        "workshops": [
+                            {
+                                "id": 88,
+                                "course": 12938,
+                                "name": "課題6 教養卒論第四稿の提出と非リアルタイム・ピア・レビュー",
+                                "intro": "<p></p><div>教養卒論第四稿を，ファイルベースでピアレビューして頂きます。</div><div>それを，この授業では非リアルタイム・ピア・レビューと呼んでいます。</div><div>11月15日と11月18日を非リアルタイム・ピア・レビューの回に設定していますが，Zoom上に集まる必要はありません。各自で時間を作り，他の学生が書いた教養卒論2編のレビューを行って下さい。</div><div><br></div><div>レビューは，Microsoft Word 2007以降のファイル（拡張子がdocxのもの）を推奨しますが，pdfも可とします。</div><div><br></div><div>今後のスケジュールは，以下の通りです。</div><div></div><div>1. 教養卒論第四稿を提出</div><div>11月12日（金）正午まで（厳守）</div><div>　教養卒論第四稿を，ピアレビュー用にT2SCHOLAに提出（Wordを推奨，pdfも可）</div><div>　締切までに提出されないとピアレビューができなくなります。必ず締切までに提出して下さい。</div><div><br></div><div>2. 相互評価して結果を提出</div><div>11月13日（土）正午から11月19日（金）正午まで（締切厳守）</div><div>　非リアルタイム・ピア・レビュー期間</div><div>　　T2SCHOLA上で割り当てられた一人2編の文章をピアレビュー</div><div>　　Wordの校閲機能を用いてレビュー・コメントを付す。pdfの場合は，コメント付与機能を利用する。</div><div>　　ピアレビュー結果をT2SCHOLAに提出</div><div><br></div><div>3. 相互評価結果を閲覧</div><div>11月19日（土）正午から</div><div><br></div><div><div>11月22日（木）授業</div><div>　　教養卒論発表会</div><br></div><div>4. 教養卒論最終稿とオンラインピアレビューの振り返りシート提出</div><div><div>11月25日（木）中（厳守）</div></div><br><p></p>",
+                                "introformat": 1,
+                                "lang": null,
+                                "instructauthors": "<p></p><p>非リアルタイム・ピア・レビュー用の教養卒論第四稿を提出して下さい。</p><p></p><ul><li>ファイル形式は，Microsoft Word（Word 2007 以降）を推奨としますが，pdfも可とします。</li><li>提出締切：2020年11月12日（金）正午（厳守）</li><li>締切後，提出された原稿を元にピアレビューの対象2編の組み分けを行うので，締切は厳守して下さい。</li><li>締切に間に合わないと，ピアレビューできなくなります。</li></ul><p></p><p>補足</p><p></p><ul><li>東京工業大学では，個人用コンピュータにおいて，Office365を利用可能です。</li><li>以下を参照して下さい。</li><li>http://www.officesoft.gsic.titech.ac.jp/index.shtml</li></ul><br /><p></p>",
+                                "instructauthorsformat": 1,
+                                "instructreviewers": "<p></p><p>WordファイルあるいはPDFファイルをダウンロードして，Wordの場合は校閲機能を利用して，PDFの場合はコメント付与機能を利用してコメントを記入して下さい。</p><p></p><ul><li>対面のピア・レビューよりも直接的にコメントをすることになりますが，相手の著作権を守るというピア・レビューの精神は忘れないようにしてください。</li><li>積極的に褒めましょう（コメントの半分以上は褒めよう）</li></ul><p></p><p>レビューコメントを書いたファイルは，以下のファイル名にして提出して下さい。</p><p></p><ul><li>PR_著者の姓名_レビューア（あなた）の姓名.docx　あるいは</li><li>PR_著者の姓名_レビューア（あなた）の姓名.pdf</li></ul><p></p><p>提出締切：2021年11月19日（金）正午（厳守）<br />締切後の提出はできませんので，厳守して下さい。</p><p><br /></p><br /><p></p>",
+                                "instructreviewersformat": 1,
+                                "timemodified": 1636876086,
+                                "phase": 50,
+                                "useexamples": false,
+                                "usepeerassessment": true,
+                                "useselfassessment": false,
+                                "grade": 0,
+                                "gradinggrade": 0,
+                                "strategy": "comments",
+                                "evaluation": "best",
+                                "gradedecimals": 0,
+                                "submissiontypetext": 0,
+                                "submissiontypefile": 2,
+                                "nattachments": 1,
+                                "submissionfiletypes": ".docx .pdf",
+                                "latesubmissions": false,
+                                "maxbytes": 0,
+                                "examplesmode": 0,
+                                "submissionstart": 1636297200,
+                                "submissionend": 1636686000,
+                                "assessmentstart": 1636772400,
+                                "assessmentend": 1637290800,
+                                "phaseswitchassessment": false,
+                                "conclusion": "",
+                                "conclusionformat": 1,
+                                "overallfeedbackmode": 1,
+                                "overallfeedbackfiles": 1,
+                                "overallfeedbackfiletypes": ".docx .pdf",
+                                "overallfeedbackmaxbytes": 0,
+                                "coursemodule": 41200,
+                                "introfiles": [],
+                                "instructauthorsfiles": [],
+                                "instructreviewersfiles": []
+                            }
+                        ],
+                        "warnings": []
+                    }
+                    """#
+            )
+        )
+
+        do {
+            let response = try await t2Schola.getWorkshops(wsToken: token)
+            XCTAssertEqual(response.workshops.count, 1)
+            XCTAssertEqual(response.workshops[0].id, 88)
+            XCTAssertEqual(response.workshops[0].name, "課題6 教養卒論第四稿の提出と非リアルタイム・ピア・レビュー")
+            XCTAssertEqual(response.workshops[0].submissionend, Date(timeIntervalSince1970: 1_636_686_000))
+        } catch {
+            print(error._domain)
+            print(error._code)
+            print(error)
+        }
+    }
+
+
     func testForumDiscussions() async throws {
         let t2Schola = T2Schola(
             apiClient: APIClientMock(
