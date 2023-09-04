@@ -75,6 +75,10 @@ public struct T2Schola {
         try await apiClient.send(request: QuizzesRequest(wsToken: wsToken))
     }
 
+    public func getWorkshops(wsToken: String) async throws -> WorkshopsResponse {
+        try await apiClient.send(request: WorkshopsRequest(wsToken: wsToken))
+    }
+
     public func getForumDiscussions(wsToken: String, forumId: Int) async throws -> ForumDiscussionsResponse {
         try await apiClient.send(request: ForumDiscussionsRequest(wsToken: wsToken, forumId: forumId))
     }
