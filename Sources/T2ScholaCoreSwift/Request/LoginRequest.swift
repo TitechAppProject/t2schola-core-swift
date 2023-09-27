@@ -5,8 +5,9 @@ import Kanna
 import FoundationNetworking
 #endif
 
-public enum T2ScholaLoginError: Error {
+public enum T2ScholaLoginError: Error, Equatable {
     case parseHtml
+    case policy
     case parseUrlScheme(responseHTML: String)
     case parseToken(responseHTML: String)
 }
@@ -30,12 +31,15 @@ struct LoginRequest: T2ScholaRequest {
                 do {
                     return try HTML(html: data, encoding: String.Encoding.utf8)
                 } catch {
-                    print(error)
                     return nil
                 }
             }()
         else {
             throw T2ScholaLoginError.parseHtml
+        }
+        
+        if let title = doc.title, (title.contains("ポリシー") || title.contains("policy")) {
+            throw T2ScholaLoginError.policy
         }
 
         guard

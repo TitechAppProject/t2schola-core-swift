@@ -23,6 +23,8 @@ let package = Package(
             dependencies: ["Kanna"]),
         .testTarget(
             name: "T2ScholaCoreSwiftTests",
-            dependencies: ["T2ScholaCoreSwift"]),
+            dependencies: ["T2ScholaCoreSwift"],
+            resources: [.process("HTML")]
+        ),
     ]
 )
