@@ -785,6 +785,23 @@ final class T2ScholaTests: XCTestCase {
         }
     }
 
+    func testAPIPolicyError() async {
+        let policyErrorHtml = try! String(contentsOf: Bundle.module.url(forResource: "policy_error", withExtension: "html")!)
+
+        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: policyErrorHtml))
+
+        do {
+            _ = try await t2Schola.getSiteInfo(wsToken: "")
+            XCTFail()
+        } catch {
+            if case APIClientError.policy = error {
+                XCTAssert(true)
+            } else {
+                XCTFail()
+            }
+        }
+    }
+
     //    func testGetNotifications() async throws {
     //        let t2Schola = T2Schola()
     //        if userMockServer { T2Schola.changeToMock() }

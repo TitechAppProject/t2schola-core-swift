@@ -37,8 +37,8 @@ struct LoginRequest: T2ScholaRequest {
         else {
             throw T2ScholaLoginError.parseHtml
         }
-        
-        if let title = doc.title, (title.contains("ポリシー") || title.contains("policy")) {
+
+        if let title = doc.title, (title.contains("ポリシー") || title.contains("policy") || title.contains("Policy")) {
             throw T2ScholaLoginError.policy
         }
 

@@ -20,6 +20,7 @@ public enum APIClientError: Error {
     case t2ScholaAPIError(_ response: T2ScholaAPIErrorResponse)
     case invalidStatusCode(_ code: Int)
     case responseDecode(_ error: Error)
+    case policy
 }
 
 public struct T2ScholaAPIErrorResponse: Decodable {
