@@ -33,6 +33,18 @@ final class T2ScholaTests: XCTestCase {
         let wsToken = try await t2Schola.getToken()
         XCTAssertEqual(wsToken, token)
     }
+    
+    func testPolicyError() async {
+        let policyErrorHtml = try! String(contentsOf: Bundle.module.url(forResource: "policy_error", withExtension: "html")!)
+
+        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: policyErrorHtml))
+
+        do {
+            _ = try await t2Schola.getToken()
+        } catch {
+            XCTAssertEqual(error as! T2ScholaLoginError, T2ScholaLoginError.policy)
+        }
+    }
 
     func testUsersByFieldRequest() async throws {
         let t2Schola = T2Schola(
