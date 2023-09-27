@@ -80,7 +80,17 @@ extension Request where Response: Decodable {
     public func decode(data: Data) throws -> Response {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
-        return try decoder.decode(Response.self, from: data)
+        do {
+            return try decoder.decode(Response.self, from: data)
+        } catch {
+            if
+                let html = String(data: data, encoding: .utf8),
+                (html.contains("ポリシー") || html.contains("policy") || html.contains("Policy")) {
+                throw APIClientError.policy
+            } else {
+                throw error
+            }
+        }
     }
 }
 
