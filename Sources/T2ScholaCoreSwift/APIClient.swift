@@ -55,15 +55,7 @@ struct APIClientImpl: APIClient {
             throw APIClientError.invalidStatusCode(httpResponse.statusCode)
         }
 
-        do {
-            return try request.decode(data: data)
-        } catch {
-            if let errorResponse = try? JSONDecoder().decode(T2ScholaAPIErrorResponse.self, from: data) {
-                throw APIClientError.t2ScholaAPIError(errorResponse)
-            } else {
-                throw APIClientError.responseDecode(error)
-            }
-        }
+        return try request.decode(data: data)
     }
 
     func fetchData(request: URLRequest) async throws -> (Data, URLResponse) {

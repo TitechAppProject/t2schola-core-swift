@@ -83,12 +83,14 @@ extension Request where Response: Decodable {
         do {
             return try decoder.decode(Response.self, from: data)
         } catch {
-            if
+            if let errorResponse = try? JSONDecoder().decode(T2ScholaAPIErrorResponse.self, from: data) {
+                throw APIClientError.t2ScholaAPIError(errorResponse)
+            } else if
                 let html = String(data: data, encoding: .utf8),
                 (html.contains("ポリシー") || html.contains("policy") || html.contains("Policy")) {
                 throw APIClientError.policy
             } else {
-                throw error
+                throw APIClientError.responseDecode(error)
             }
         }
     }
