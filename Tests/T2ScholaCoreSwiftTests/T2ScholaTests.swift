@@ -786,7 +786,7 @@ final class T2ScholaTests: XCTestCase {
     }
 
     func testAPIPolicyError() async {
-        let policyErrorHtml = try! String(contentsOf: Bundle.module.url(forResource: "policy_error", withExtension: "html")!)
+        let policyErrorHtml = try! String(contentsOf: Bundle.module.url(forResource: "api_policy_error", withExtension: "html")!)
 
         let t2Schola = T2Schola(apiClient: APIClientMock(mockString: policyErrorHtml))
 
@@ -796,6 +796,23 @@ final class T2ScholaTests: XCTestCase {
         } catch {
             if case APIClientError.policy = error {
                 XCTAssert(true)
+            } else {
+                XCTFail()
+            }
+        }
+    }
+    
+    func testParseErrorWhenReturnedPortalHome() async {
+        let parseErrorHtml = try! String(contentsOf: Bundle.module.url(forResource: "portal_home", withExtension: "html")!)
+
+        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: parseErrorHtml))
+
+        do {
+            _ = try await t2Schola.getToken()
+            XCTFail()
+        } catch {
+            if case let T2ScholaLoginError.parseUrlScheme(responseHTML) = error {
+                XCTAssertEqual(parseErrorHtml, responseHTML)
             } else {
                 XCTFail()
             }
