@@ -48,7 +48,7 @@ struct LoginRequest: T2ScholaRequest {
             let decodedData = Data(base64Encoded: href.replacingOccurrences(of: "mmt2schola://token=", with: "")),
             let decodedStr = String(data: decodedData, encoding: .utf8)
         else {
-            throw T2ScholaLoginError.parseUrlScheme(responseHTML: doc.toHTML ?? "")
+            throw T2ScholaLoginError.parseUrlScheme(responseHTML: String(data: data, encoding: .utf8) ?? "")
         }
 
         let splitedToken = decodedStr.components(separatedBy: ":::")
@@ -56,7 +56,7 @@ struct LoginRequest: T2ScholaRequest {
         if splitedToken.count > 2 {
             return LoginResponse(wsToken: splitedToken[1])
         } else {
-            throw T2ScholaLoginError.parseToken(responseHTML: doc.toHTML ?? "")
+            throw T2ScholaLoginError.parseToken(responseHTML: String(data: data, encoding: .utf8) ?? "")
         }
     }
 

@@ -87,7 +87,7 @@ extension Request where Response: Decodable {
                 throw APIClientError.t2ScholaAPIError(errorResponse)
             } else if
                 let html = String(data: data, encoding: .utf8),
-                (html.contains("ポリシー") || html.contains("policy") || html.contains("Policy")) {
+                html.contains("サイトポリシー") {
                 throw APIClientError.policy
             } else {
                 throw APIClientError.responseDecode(error)
