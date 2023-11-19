@@ -14,10 +14,12 @@ public struct T2Schola {
     init(apiClient: APIClient) {
         self.apiClient = apiClient
     }
-    
+
+    #if DEBUG
     public init(mockHtml: String) {
         self.apiClient = APIClientMock(mockString: mockHtml)
     }
+    #endif
 
     public func getToken() async throws -> String {
         try await apiClient.send(request: LoginRequest()).wsToken
