@@ -29,7 +29,7 @@ public protocol Request {
 
     func encode(requestBody: RequestBody) throws -> Data
 
-    func decode(data: Data) throws -> Response
+    func decode(data: Data, responseUrl: URL?) throws -> Response
 }
 
 public struct EmptyRequestBody: Encodable {}
@@ -77,7 +77,7 @@ extension Request {
 }
 
 extension Request where Response: Decodable {
-    public func decode(data: Data) throws -> Response {
+    public func decode(data: Data, responseUrl: URL?) throws -> Response {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
         do {

@@ -16,8 +16,8 @@ public struct T2Schola {
     }
 
     #if DEBUG
-    public init(mockHtml: String) {
-        self.apiClient = APIClientMock(mockString: mockHtml)
+    public init(mockHtml: String, mockResponseUrl: URL?) {
+        self.apiClient = APIClientMock(mockString: mockHtml, mockResponseUrl: mockResponseUrl)
     }
     #endif
 

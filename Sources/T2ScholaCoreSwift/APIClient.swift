@@ -55,7 +55,7 @@ struct APIClientImpl: APIClient {
             throw APIClientError.invalidStatusCode(httpResponse.statusCode)
         }
 
-        return try request.decode(data: data)
+        return try request.decode(data: data, responseUrl: httpResponse.url)
     }
 
     func fetchData(request: URLRequest) async throws -> (Data, URLResponse) {
@@ -111,23 +111,27 @@ class HTTPClientDelegate: URLProtocol, URLSessionTaskDelegate {
 struct APIClientMock: APIClient {
     private let mockData: [(Any.Type, Any)]
     private let mockString: String?
+    private let mockResponseUrl: URL?
     private let error: APIClientError?
 
     init(mockData: [(Any.Type, Any)]) {
         self.mockData = mockData
         self.mockString = nil
+        self.mockResponseUrl = nil
         self.error = nil
     }
 
-    init(mockString: String) {
+    init(mockString: String, mockResponseUrl: URL?) {
         self.mockData = []
         self.mockString = mockString
+        self.mockResponseUrl = mockResponseUrl
         self.error = nil
     }
 
     init(error: APIClientError) {
         self.mockData = []
         self.mockString = nil
+        self.mockResponseUrl = nil
         self.error = error
     }
 
@@ -137,7 +141,7 @@ struct APIClientMock: APIClient {
         }
 
         if let mockString = mockString {
-            return try request.decode(data: mockString.data(using: .utf8)!)
+            return try request.decode(data: mockString.data(using: .utf8)!, responseUrl: mockResponseUrl)
         }
 
         for (key, value) in self.mockData {
