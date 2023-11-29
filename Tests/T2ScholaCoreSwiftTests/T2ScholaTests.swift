@@ -37,7 +37,7 @@ final class T2ScholaTests: XCTestCase {
     func testPolicyError() async {
         let policyErrorHtml = try! String(contentsOf: Bundle.module.url(forResource: "policy_error", withExtension: "html")!)
 
-        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: policyErrorHtml))
+        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: policyErrorHtml, mockResponseUrl: nil))
 
         do {
             _ = try await t2Schola.getToken()
@@ -81,7 +81,7 @@ final class T2ScholaTests: XCTestCase {
                       }
                     ]
 
-                    """
+                    """, mockResponseUrl: nil
             )
         )
 
@@ -155,7 +155,7 @@ final class T2ScholaTests: XCTestCase {
                         ]
                     }
 
-                    """#
+                    """#, mockResponseUrl: nil
             )
         )
         if userMockServer { T2Schola.changeToMock() }
@@ -277,7 +277,7 @@ final class T2ScholaTests: XCTestCase {
                       "warnings": []
                     }
 
-                    """#
+                    """#, mockResponseUrl: nil
             )
         )
         let status = try await t2ScholaForMockGetAssignmentSubmissionStatus.getAssignmentSubmissionStatus(assignmentId: assignments.courses[0].assignments[0].id, userId: userId, wsToken: token)
@@ -304,7 +304,7 @@ final class T2ScholaTests: XCTestCase {
                             "delete": true
                         }
                     ]
-                    """#
+                    """#, mockResponseUrl: nil
             )
         )
         let response = try await t2Schola.addComments(instanceId: 80000, itemId: 500000, comment: "test comment あ !*'();:@&=+$,/?%#[]", wsToken: token)
@@ -430,7 +430,7 @@ final class T2ScholaTests: XCTestCase {
                       ],
                       "warnings": []
                     }
-                    """#
+                    """#, mockResponseUrl: nil
             )
         )
 
@@ -501,7 +501,7 @@ final class T2ScholaTests: XCTestCase {
                         ],
                         "warnings": []
                     }
-                    """#
+                    """#, mockResponseUrl: nil
             )
         )
 
@@ -617,7 +617,7 @@ final class T2ScholaTests: XCTestCase {
                         }
                       ]
                     }
-                    """#
+                    """#, mockResponseUrl: nil
             )
         )
 
@@ -676,7 +676,7 @@ final class T2ScholaTests: XCTestCase {
                         "istracked": false
                       }
                     ]
-                    """#
+                    """#, mockResponseUrl: nil
             )
         )
         do {
@@ -768,7 +768,7 @@ final class T2ScholaTests: XCTestCase {
                         "istracked": false
                       }
                     ]
-                    """#
+                    """#, mockResponseUrl: nil
             )
         )
 
@@ -787,7 +787,7 @@ final class T2ScholaTests: XCTestCase {
     func testAPIPolicyError() async {
         let policyErrorHtml = try! String(contentsOf: Bundle.module.url(forResource: "api_policy_error", withExtension: "html")!)
 
-        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: policyErrorHtml))
+        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: policyErrorHtml, mockResponseUrl: nil))
 
         do {
             _ = try await t2Schola.getSiteInfo(wsToken: "")
@@ -804,14 +804,15 @@ final class T2ScholaTests: XCTestCase {
     func testParseErrorWhenReturnedPortalHome() async {
         let parseErrorHtml = try! String(contentsOf: Bundle.module.url(forResource: "portal_home", withExtension: "html")!)
 
-        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: parseErrorHtml))
+        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: parseErrorHtml, mockResponseUrl: URL(string: "https://portal.nap.gsic.titech.ac.jp/")))
 
         do {
             _ = try await t2Schola.getToken()
             XCTFail()
         } catch {
-            if case let T2ScholaLoginError.parseUrlScheme(responseHTML) = error {
+            if case let T2ScholaLoginError.parseUrlScheme(responseHTML, responseUrl) = error {
                 XCTAssertEqual(parseErrorHtml, responseHTML)
+                XCTAssertEqual(URL(string: "https://portal.nap.gsic.titech.ac.jp/"), responseUrl)
             } else {
                 XCTFail()
             }

@@ -8,8 +8,8 @@ import FoundationNetworking
 public enum T2ScholaLoginError: Error, Equatable {
     case parseHtml
     case policy
-    case parseUrlScheme(responseHTML: String)
-    case parseToken(responseHTML: String)
+    case parseUrlScheme(responseHTML: String, responseUrl: URL?)
+    case parseToken(responseHTML: String, responseUrl: URL?)
 }
 
 struct LoginRequest: T2ScholaRequest {
@@ -25,7 +25,7 @@ struct LoginRequest: T2ScholaRequest {
         "User-Agent": "Mozilla/5.0 (iPad; CPU OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
     ]
 
-    func decode(data: Data) throws -> LoginResponse {
+    func decode(data: Data, responseUrl: URL?) throws -> LoginResponse {
         guard
             let doc = { () -> HTMLDocument? in
                 do {
@@ -48,7 +48,7 @@ struct LoginRequest: T2ScholaRequest {
             let decodedData = Data(base64Encoded: href.replacingOccurrences(of: "mmt2schola://token=", with: "")),
             let decodedStr = String(data: decodedData, encoding: .utf8)
         else {
-            throw T2ScholaLoginError.parseUrlScheme(responseHTML: String(data: data, encoding: .utf8) ?? "")
+            throw T2ScholaLoginError.parseUrlScheme(responseHTML: String(data: data, encoding: .utf8) ?? "", responseUrl: responseUrl)
         }
 
         let splitedToken = decodedStr.components(separatedBy: ":::")
@@ -56,7 +56,7 @@ struct LoginRequest: T2ScholaRequest {
         if splitedToken.count > 2 {
             return LoginResponse(wsToken: splitedToken[1])
         } else {
-            throw T2ScholaLoginError.parseToken(responseHTML: String(data: data, encoding: .utf8) ?? "")
+            throw T2ScholaLoginError.parseToken(responseHTML: String(data: data, encoding: .utf8) ?? "", responseUrl: responseUrl)
         }
     }
 
