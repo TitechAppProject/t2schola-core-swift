@@ -444,6 +444,7 @@ final class T2ScholaTests: XCTestCase {
             print(error._domain)
             print(error._code)
             print(error)
+            XCTFail()
         }
     }
 
