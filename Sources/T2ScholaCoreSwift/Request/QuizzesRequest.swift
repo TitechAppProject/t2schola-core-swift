@@ -74,7 +74,8 @@ public struct QuizResponse: Codable {
     public let hasfeedback: Int?  //  Whether the quiz has any non-blank feedback text
     public let hasquestions: Int?  //  Whether the quiz has questions
     public let section: Int?  //  Course section id
-    public let visible: Int?  //  Module visibility
+    //  Bool | Int のどちらも入る可能性があり、使わないのでコメントアウト
+    //    public let visible: Bool?  //  Module visibility
     public let groupmode: Int?  //  Group mode
     public let groupingid: Int?  //  Grouping id
 
