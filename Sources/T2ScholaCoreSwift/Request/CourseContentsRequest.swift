@@ -68,7 +68,6 @@ public enum CourseContentModuleName: String, Codable {
     public init(from decoder: Decoder) throws {
         let rawValue = try decoder.singleValueContainer().decode(String.self)
         guard let value = CourseContentModuleName(rawValue: rawValue) else {
-            print(rawValue)
             self = .unknown
             return
         }
@@ -100,7 +99,6 @@ public enum CourseContentModuleContentType: String, Codable {
     public init(from decoder: Decoder) throws {
         let rawValue = try decoder.singleValueContainer().decode(String.self)
         guard let value = CourseContentModuleContentType(rawValue: rawValue) else {
-            print(rawValue)
             self = .unknown
             return
         }
