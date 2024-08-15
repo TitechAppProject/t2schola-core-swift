@@ -7,6 +7,10 @@
 
 import Foundation
 
+#if canImport(os)
+import os
+#endif
+
 #if canImport(FoundationNetworking)
 import FoundationNetworking
 #endif
@@ -76,6 +80,10 @@ struct APIClientImpl: APIClient {
 }
 
 class HTTPClientDelegate: URLProtocol, URLSessionTaskDelegate {
+    #if DEBUG && canImport(os)
+    private let logger = Logger(subsystem: "app.titech.t2schola-core-swift", category: "HTTPClientDelegate")
+    #endif
+
     func urlSession(
         _ session: URLSession,
         task: URLSessionTask,
@@ -83,26 +91,30 @@ class HTTPClientDelegate: URLProtocol, URLSessionTaskDelegate {
         newRequest request: URLRequest,
         completionHandler: @escaping (URLRequest?) -> Swift.Void
     ) {
-        #if DEBUG
-        print("")
-        print("\(response.statusCode) \(task.currentRequest?.httpMethod ?? "") \(task.currentRequest?.url?.absoluteString ?? "")")
-        print("  requestHeader: \(task.currentRequest?.allHTTPHeaderFields ?? [:])")
-        print("  requestBody: \(String(data: task.originalRequest?.httpBody ?? Data(), encoding: .utf8) ?? "")")
-        print("  responseHeader: \(response.allHeaderFields)")
-        print("  redirect -> \(request.httpMethod ?? "") \(request.url?.absoluteString ?? "")")
-        print("")
+        #if DEBUG && canImport(os)
+        logger.debug(
+            """
+            \(response.statusCode) \(task.currentRequest?.httpMethod ?? "") \(task.currentRequest?.url?.absoluteString ?? "")
+              requestHeader: \(task.currentRequest?.allHTTPHeaderFields ?? [:])
+              requestBody: \(String(data: task.originalRequest?.httpBody ?? Data(), encoding: .utf8) ?? "")
+              responseHeader: \(response.allHeaderFields)
+              redirect -> \(request.httpMethod ?? "") \(request.url?.absoluteString ?? "")
+            """
+        )
         #endif
 
         completionHandler(request)
     }
 
     func urlSession(_: URLSession, task: URLSessionTask, didFinishCollecting _: URLSessionTaskMetrics) {
-        #if DEBUG
-        print("")
-        print("200 \(task.currentRequest!.httpMethod!) \(task.currentRequest!.url!.absoluteString)")
-        print("  requestHeader: \(task.currentRequest!.allHTTPHeaderFields ?? [:])")
-        print("  requestBody: \(String(data: task.originalRequest!.httpBody ?? Data(), encoding: .utf8) ?? "")")
-        print("")
+        #if DEBUG && canImport(os)
+        logger.debug(
+            """
+            200 \(task.currentRequest!.httpMethod!) \(task.currentRequest!.url!.absoluteString)
+              requestHeader: \(task.currentRequest!.allHTTPHeaderFields ?? [:])
+              requestBody: \(String(data: task.originalRequest!.httpBody ?? Data(), encoding: .utf8) ?? "")
+            """
+        )
         #endif
     }
 }
