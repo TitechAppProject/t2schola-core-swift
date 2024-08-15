@@ -22,7 +22,7 @@ struct LoginRequest: T2ScholaRequest {
     let queryParameters: [String: Any]?
 
     let headerFields: [String: String]? = [
-        "User-Agent": "Mozilla/5.0 (iPad; CPU OS 13_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.1 Mobile/15E148 Safari/604.1"
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1"
     ]
 
     func decode(data: Data, responseUrl: URL?) throws -> LoginResponse {
