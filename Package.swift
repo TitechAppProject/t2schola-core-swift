@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.10
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -15,7 +15,7 @@ let package = Package(
             targets: ["T2ScholaCoreSwift"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/tid-kijyun/Kanna.git", from: "5.2.2"),
+        .package(url: "https://github.com/tid-kijyun/Kanna.git", from: "5.3.0"),
     ],
     targets: [
         .target(
