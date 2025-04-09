@@ -4,6 +4,6 @@ protocol RestAPIRequest: T2ScholaRequest {}
 
 extension RestAPIRequest {
     var path: String {
-        "webservice/rest/server.php"
+        basePath + "/webservice/rest/server.php"
     }
 }
