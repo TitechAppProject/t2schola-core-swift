@@ -45,7 +45,7 @@ struct LoginRequest: T2ScholaRequest {
         guard
             let launchapp = doc.css("a#launchapp").first,
             let href = launchapp["href"],
-            let decodedData = Data(base64Encoded: href.replacingOccurrences(of: "moodlemobile://token=", with: "")),
+            let decodedData = isMockServer ? Data(base64Encoded: href.replacingOccurrences(of: "mmt2schola://token=", with: "")) : Data(base64Encoded: href.replacingOccurrences(of: "moodlemobile://token=", with: "")),
             let decodedStr = String(data: decodedData, encoding: .utf8)
         else {
             throw T2ScholaLoginError.parseUrlScheme(responseHTML: String(data: data, encoding: .utf8) ?? "", responseUrl: responseUrl)
@@ -64,7 +64,7 @@ struct LoginRequest: T2ScholaRequest {
         queryParameters = [
             "service": "moodle_mobile_app",
             "passport": Double.random(in: 0...1000),
-            "urlscheme": "moodlemobile",
+            "urlscheme": isMockServer ? "mmt2schola" : "moodlemobile",
         ]
     }
 }
