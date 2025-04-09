@@ -17,7 +17,7 @@ struct LoginRequest: T2ScholaRequest {
 
     let method: HTTPMethod = .get
 
-    let path: String = "/admin/tool/mobile/launch.php"
+    var path: String { basePath + "/admin/tool/mobile/launch.php" }
 
     let queryParameters: [String: Any]?
 
@@ -45,7 +45,7 @@ struct LoginRequest: T2ScholaRequest {
         guard
             let launchapp = doc.css("a#launchapp").first,
             let href = launchapp["href"],
-            let decodedData = Data(base64Encoded: href.replacingOccurrences(of: "mmt2schola://token=", with: "")),
+            let decodedData = Data(base64Encoded: href.replacingOccurrences(of: "moodlemobile://token=", with: "")),
             let decodedStr = String(data: decodedData, encoding: .utf8)
         else {
             throw T2ScholaLoginError.parseUrlScheme(responseHTML: String(data: data, encoding: .utf8) ?? "", responseUrl: responseUrl)
@@ -53,7 +53,7 @@ struct LoginRequest: T2ScholaRequest {
 
         let splitedToken = decodedStr.components(separatedBy: ":::")
 
-        if splitedToken.count > 2 {
+        if splitedToken.count > 1 {
             return LoginResponse(wsToken: splitedToken[1])
         } else {
             throw T2ScholaLoginError.parseToken(responseHTML: String(data: data, encoding: .utf8) ?? "", responseUrl: responseUrl)
@@ -64,11 +64,10 @@ struct LoginRequest: T2ScholaRequest {
         queryParameters = [
             "service": "moodle_mobile_app",
             "passport": Double.random(in: 0...1000),
-            "urlscheme": "mmt2schola",
+            "urlscheme": "moodlemobile",
         ]
     }
 }
-
 struct LoginResponse {
     let wsToken: String
 }

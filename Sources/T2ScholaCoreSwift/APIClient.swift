@@ -58,7 +58,11 @@ struct APIClientImpl: APIClient {
         guard (200..<300).contains(httpResponse.statusCode) else {
             throw APIClientError.invalidStatusCode(httpResponse.statusCode)
         }
-
+        //dataをテキストに変換してprint
+        #if DEBUG && canImport(os)
+        let responseString = String(data: data, encoding: .utf8) ?? ""
+        print("Response String: \(responseString)")
+        #endif
         return try request.decode(data: data, responseUrl: httpResponse.url)
     }
 
