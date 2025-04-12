@@ -27,7 +27,7 @@ struct DashboardRedirectPageRequest: T2ScholaRequest {
     
     var requestBody: RequestBody
 
-    let queryParameters: [String: Any]?
+    let queryParameters: [String: Any]? = [:]        
 
     var headerFields: [String: String]? = [
         "Origin": baseHost,
@@ -65,7 +65,6 @@ struct DashboardRedirectPageRequest: T2ScholaRequest {
     }
 
     init(htmlInputs: [HTMLInput]) {
-        queryParameters = [:]
         self.requestBody = DashboardRedirectPageRequestBody(
             query: htmlInputs.reduce(into: [String: Any]()) {
                 $0[$1.name] = $1.value

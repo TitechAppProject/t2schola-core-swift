@@ -85,7 +85,7 @@ final class T2ScholaTests: XCTestCase {
                 value: "https://lms.s.isct.ac.jp/2025/"
             )
         ]
-        do{
+        do {
             try await t2Schola.fetchDashboardRedirect(htmlInputs: htmlInputs)
         } catch {
             XCTAssertEqual(error as! LMSDashboardRedirectError, LMSDashboardRedirectError.invalidResponse)
