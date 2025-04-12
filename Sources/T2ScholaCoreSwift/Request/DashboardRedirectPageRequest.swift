@@ -55,6 +55,8 @@ struct DashboardRedirectPageRequest: T2ScholaRequest {
         }
 
         // TODO: ポリシー同意画面の判定
+        // ポリシーエラーのHTMLを入手できていないので判定部分のコードを書けていません
+        // また，ポリシー同意判定をLoginRequestで行うかorここで行うかの議論も必要です
 
         guard let bodyHtml = doc.css("body").first?.innerHTML, bodyHtml.contains("ダッシュボード") || bodyHtml.contains("Dashboard")
         else {
