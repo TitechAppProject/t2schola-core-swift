@@ -68,8 +68,24 @@ final class T2ScholaTests: XCTestCase {
     func testGetDashboardRedirectError() async throws {
         let dashboardHtml = try String(contentsOf: Bundle.module.url(forResource: "dashboard_redirect_error", withExtension: "html")!)
         let t2Schola = T2Schola(apiClient: APIClientMock(mockString: dashboardHtml, mockResponseUrl: nil))
-        let htmlInputs: [HTMLInput] = []
-        do {
+        let htmlInputs = [
+            HTMLInput(
+                name: "utf8",
+                type: .hidden,
+                value: "✓"
+            ),
+            HTMLInput(
+                name: "SAMLResponse",
+                type: .hidden,
+                value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            ),
+            HTMLInput(
+                name: "RelayState",
+                type: .hidden,
+                value: "https://lms.s.isct.ac.jp/2025/"
+            )
+        ]
+        do{
             try await t2Schola.fetchDashboardRedirect(htmlInputs: htmlInputs)
         } catch {
             XCTAssertEqual(error as! LMSDashboardRedirectError, LMSDashboardRedirectError.invalidResponse)
