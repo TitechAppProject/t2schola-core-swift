@@ -22,9 +22,6 @@ public struct T2Schola {
     #endif
 
     public func getDashboard() async throws {
-        if isMockServer {
-            return
-        }
         let result = try await apiClient.send(request: DashboardPageRequest())
         if result.alreadyRequested {
             return

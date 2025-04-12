@@ -12,6 +12,18 @@ final class T2ScholaTests: XCTestCase {
     let token = "7ea1522182832a9a1ff54d8ed04ed695"
     let userId = 999
     let userMockServer = true
+    
+    func testGetDashboard() async throws {
+        let dashboardHtml = try! String(contentsOf: Bundle.module.url(forResource: "dashboard", withExtension: "html")!)
+        let dashboardApiClient = APIClientMock(mockString: dashboardHtml, mockResponseUrl: nil)
+        let dashboardPageRequest = DashboardPageRequest()
+        let dashboardPageResponse = try await dashboardApiClient.send(request: dashboardPageRequest)
+        XCTAssertEqual(dashboardPageResponse.alreadyRequested, false)
+        let dashboardRedirectHtml = try! String(contentsOf: Bundle.module.url(forResource: "dashboard_redirect", withExtension: "html")!)
+        let dashboardRedirectApiClient = APIClientMock(mockString: dashboardRedirectHtml, mockResponseUrl: nil)
+        let dashboardRedirectPageRequest = DashboardRedirectPageRequest(htmlInputs: dashboardPageResponse.htmlInputs)
+        try await dashboardRedirectApiClient.send(request: dashboardRedirectPageRequest)
+    }
 
     func testLogin() async throws {
         let t2Schola = T2Schola()
