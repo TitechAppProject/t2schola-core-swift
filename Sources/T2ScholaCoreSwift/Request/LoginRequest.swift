@@ -6,7 +6,6 @@ import FoundationNetworking
 #endif
 
 public enum T2ScholaLoginError: Error, Equatable {
-    case dashBoardError
     case parseHtml
     case policy
     case parseUrlScheme(responseHTML: String, responseUrl: URL?)

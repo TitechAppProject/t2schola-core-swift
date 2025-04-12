@@ -12,6 +12,11 @@ import Kanna
 import FoundationNetworking
 #endif
 
+enum LMSDashboardRedirectError: Error, Equatable {
+    case parseHtml
+    case invalidResponse
+}
+
 struct DashboardRedirectPageRequest: T2ScholaRequest {
     typealias RequestBody = DashboardRedirectPageRequestBody
     typealias ResponseBody = Void
@@ -46,12 +51,12 @@ struct DashboardRedirectPageRequest: T2ScholaRequest {
                 }
             }()
         else {
-            throw T2ScholaLoginError.parseHtml
+            throw LMSDashboardRedirectError.parseHtml
         }
 
         guard let bodyHtml = doc.css("body").first?.innerHTML, bodyHtml.contains("ダッシュボード") || bodyHtml.contains("Dashboard")
         else {
-            throw T2ScholaLoginError.dashBoardError
+            throw LMSDashboardRedirectError.invalidResponse
         }
     }
 

@@ -12,6 +12,10 @@ import Kanna
 import FoundationNetworking
 #endif
 
+public enum LMSDashboardError: Error, Equatable {
+    case parseHtml
+}
+
 struct DashboardPageRequest: T2ScholaRequest {
     typealias RequestBody = Void
     typealias Response = DashboardPageResponse
@@ -39,7 +43,7 @@ struct DashboardPageRequest: T2ScholaRequest {
                 }
             }()
         else {
-            throw T2ScholaLoginError.parseHtml
+            throw LMSDashboardError.parseHtml
         }
         
         if let bodyHtml = doc.css("body").first?.innerHTML, bodyHtml.contains("ダッシュボード") || bodyHtml.contains("Dashboard")
