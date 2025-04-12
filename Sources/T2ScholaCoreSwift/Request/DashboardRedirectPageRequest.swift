@@ -12,7 +12,7 @@ import Kanna
 import FoundationNetworking
 #endif
 
-enum LMSDashboardRedirectError: Error, Equatable {
+public enum LMSDashboardRedirectError: Error, Equatable {
     case parseHtml
     case invalidResponse
 }
