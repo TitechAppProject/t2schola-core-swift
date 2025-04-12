@@ -21,6 +21,14 @@ public struct T2Schola {
     }
     #endif
 
+    public func getDashboard() async throws {
+        let result = try await fetchDashboard()
+        if result.alreadyRequested {
+            return
+        }
+        try await fetchDashboardRedirect(htmlInputs: result.htmlInputs)
+    }
+
     public func getToken() async throws -> String {
         try await apiClient.send(request: LoginRequest()).wsToken
     }
@@ -99,5 +107,14 @@ public struct T2Schola {
 
     public static var currentHost: String {
         baseHost
+    }
+
+    func fetchDashboard() async throws -> DashboardPageResponse {
+        let result = try await apiClient.send(request: DashboardPageRequest())
+        return result
+    }
+
+    func fetchDashboardRedirect(htmlInputs: [HTMLInput]) async throws {
+        try await apiClient.send(request: DashboardRedirectPageRequest(htmlInputs: htmlInputs))
     }
 }

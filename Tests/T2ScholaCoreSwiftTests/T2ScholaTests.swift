@@ -12,6 +12,85 @@ final class T2ScholaTests: XCTestCase {
     let token = "7ea1522182832a9a1ff54d8ed04ed695"
     let userId = 999
     let userMockServer = true
+    
+    func testGetDashboard() async throws {
+        let dashboardHtml = try String(contentsOf: Bundle.module.url(forResource: "dashboard", withExtension: "html")!)
+        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: dashboardHtml, mockResponseUrl: nil))
+        let response = try await t2Schola.fetchDashboard()
+        XCTAssertEqual(response.alreadyRequested, false)
+        XCTAssertEqual(response.htmlInputs.count, 3)
+        XCTAssertEqual(response.htmlInputs[0].name, "utf8")
+        XCTAssertEqual(response.htmlInputs[0].type, .hidden)
+        XCTAssertEqual(response.htmlInputs[0].value, "✓")
+        XCTAssertEqual(response.htmlInputs[1].name, "SAMLResponse")
+        XCTAssertEqual(response.htmlInputs[1].type, .hidden)
+        XCTAssertEqual(response.htmlInputs[1].value, "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+        XCTAssertEqual(response.htmlInputs[2].name, "RelayState")
+        XCTAssertEqual(response.htmlInputs[2].type, .hidden)
+        XCTAssertEqual(response.htmlInputs[2].value, "https://lms.s.isct.ac.jp/2025/")
+    }
+    
+    func testGetDashboardAlreadyRequested() async throws {
+        let dashboardHtml = try String(contentsOf: Bundle.module.url(forResource: "dashboard_redirect", withExtension: "html")!)
+        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: dashboardHtml, mockResponseUrl: nil))
+        let response = try await t2Schola.fetchDashboard()
+        XCTAssertEqual(response.alreadyRequested, true)
+        XCTAssertEqual(response.htmlInputs.count, 0)
+    }
+    
+    func testGetDashboardRedirect() async throws {
+        let dashboardHtml = try String(contentsOf: Bundle.module.url(forResource: "dashboard_redirect", withExtension: "html")!)
+        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: dashboardHtml, mockResponseUrl: nil))
+        let htmlInputs = [
+            HTMLInput(
+                name: "utf8",
+                type: .hidden,
+                value: "✓"
+            ),
+            HTMLInput(
+                name: "SAMLResponse",
+                type: .hidden,
+                value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            ),
+            HTMLInput(
+                name: "RelayState",
+                type: .hidden,
+                value: "https://lms.s.isct.ac.jp/2025/"
+            )
+        ]
+        do{
+            try await t2Schola.fetchDashboardRedirect(htmlInputs: htmlInputs)
+        } catch {
+            XCTFail()
+        }
+    }
+    
+    func testGetDashboardRedirectError() async throws {
+        let dashboardHtml = try String(contentsOf: Bundle.module.url(forResource: "dashboard_redirect_error", withExtension: "html")!)
+        let t2Schola = T2Schola(apiClient: APIClientMock(mockString: dashboardHtml, mockResponseUrl: nil))
+        let htmlInputs = [
+            HTMLInput(
+                name: "utf8",
+                type: .hidden,
+                value: "✓"
+            ),
+            HTMLInput(
+                name: "SAMLResponse",
+                type: .hidden,
+                value: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            ),
+            HTMLInput(
+                name: "RelayState",
+                type: .hidden,
+                value: "https://lms.s.isct.ac.jp/2025/"
+            )
+        ]
+        do {
+            try await t2Schola.fetchDashboardRedirect(htmlInputs: htmlInputs)
+        } catch {
+            XCTAssertEqual(error as! LMSDashboardRedirectError, LMSDashboardRedirectError.invalidResponse)
+        }
+    }
 
     func testLogin() async throws {
         let t2Schola = T2Schola()
