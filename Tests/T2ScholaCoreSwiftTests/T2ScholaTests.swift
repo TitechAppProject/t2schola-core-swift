@@ -19,6 +19,7 @@ final class T2ScholaTests: XCTestCase {
         let dashboardPageRequest = DashboardPageRequest()
         let dashboardPageResponse = try await dashboardApiClient.send(request: dashboardPageRequest)
         XCTAssertEqual(dashboardPageResponse.alreadyRequested, false)
+        XCTAssertEqual(dashboardPageResponse.htmlInputs.count, 3)
         let dashboardRedirectHtml = try! String(contentsOf: Bundle.module.url(forResource: "dashboard_redirect", withExtension: "html")!)
         let dashboardRedirectApiClient = APIClientMock(mockString: dashboardRedirectHtml, mockResponseUrl: nil)
         let dashboardRedirectPageRequest = DashboardRedirectPageRequest(htmlInputs: dashboardPageResponse.htmlInputs)
