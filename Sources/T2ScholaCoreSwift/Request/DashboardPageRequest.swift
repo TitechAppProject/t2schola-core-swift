@@ -24,7 +24,7 @@ struct DashboardPageRequest: T2ScholaRequest {
 
     var path: String { basePath + "/" }
 
-    let queryParameters: [String: Any]?
+    let queryParameters: [String: Any]? = [:]
 
     let headerFields: [String: String]? = [
         "Connection": "keep-alive",
@@ -59,14 +59,9 @@ struct DashboardPageRequest: T2ScholaRequest {
                 )
         })
     }
-
-    init() {
-        queryParameters = [:]
-    }
-    
 }
 
-struct DashboardPageResponse{
+struct DashboardPageResponse {
     let alreadyRequested: Bool
     let htmlInputs: [HTMLInput]
 }

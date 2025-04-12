@@ -30,7 +30,7 @@ struct DashboardRedirectPageRequest: T2ScholaRequest {
     let queryParameters: [String: Any]?
 
     var headerFields: [String: String]? = [
-        "Origin": "lms.s.isct.ac.jp",
+        "Origin": baseHost,
         "Connection": "keep-alive",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
         "Accept-Encoding": "br, gzip, deflate",
@@ -55,10 +55,6 @@ struct DashboardRedirectPageRequest: T2ScholaRequest {
         }
 
         // TODO: ポリシー同意画面の判定
-        
-        if let title = doc.title, title.contains("ポリシー") || title.contains("Policies") {
-            throw T2ScholaLoginError.policy
-        }
 
         guard let bodyHtml = doc.css("body").first?.innerHTML, bodyHtml.contains("ダッシュボード") || bodyHtml.contains("Dashboard")
         else {
