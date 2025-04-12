@@ -13,7 +13,7 @@ enum HTMLInputType: String {
     case image
 }
 
-public struct HTMLInput: Equatable {
+struct HTMLInput: Equatable {
     let name: String
     let type: HTMLInputType
     var value: String
