@@ -29,6 +29,17 @@ public struct T2Schola {
         try await apiClient.send(request: DashboardRedirectPageRequest(htmlInputs: result.htmlInputs))
     }
 
+    // テスト用コード
+    internal func fetchDashboard() async throws -> DashboardPageResponse {
+        let result = try await apiClient.send(request: DashboardPageRequest())
+        return result
+    }
+
+    // テスト用コード
+    internal func fetchDashboardRedirect(htmlInputs: [HTMLInput]) async throws {
+        try await apiClient.send(request: DashboardRedirectPageRequest(htmlInputs: htmlInputs))
+    }
+
     public func getToken() async throws -> String {
         try await apiClient.send(request: LoginRequest()).wsToken
     }
