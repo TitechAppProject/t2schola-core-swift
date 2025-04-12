@@ -54,6 +54,12 @@ struct DashboardRedirectPageRequest: T2ScholaRequest {
             throw LMSDashboardRedirectError.parseHtml
         }
 
+        // TODO: ポリシー同意画面の判定
+        
+        if let title = doc.title, title.contains("ポリシー") || title.contains("Policies") {
+            throw T2ScholaLoginError.policy
+        }
+
         guard let bodyHtml = doc.css("body").first?.innerHTML, bodyHtml.contains("ダッシュボード") || bodyHtml.contains("Dashboard")
         else {
             throw LMSDashboardRedirectError.invalidResponse
